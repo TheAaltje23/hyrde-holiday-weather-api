@@ -1,0 +1,6 @@
+@Hyrde.Challenge_HostAddress = http://localhost:5114
+
+GET {{Hyrde.Challenge_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
