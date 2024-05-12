@@ -5,4 +5,26 @@
     justify-content: center;
     align-items: center;
     min-height: 90vh;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#search-btn {
+    margin-bottom: 20px;
+}
+
+#list-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+#iconAndText {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#weatherIcon {
+    max-height: 35px;
 }
