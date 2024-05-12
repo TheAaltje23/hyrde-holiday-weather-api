@@ -4,8 +4,14 @@ namespace Hyrde.Challenge.Models
 {
     public class Weather
     {
-        public float TempFahrenheit { get; set; }
+        public float TempCelcius { get; set; }
+        public string ConditionText { get; set; }
+        public string ConditionIcon { get; set; }
+        public float WindKph { get; set; }
+        public float PercipitationMm { get; set; }
+        public int Humidity { get; set; }
         public string Country { get; set; }
         public string City { get; set; }
+        public string LocalTime { get; set; }
     }
 }
