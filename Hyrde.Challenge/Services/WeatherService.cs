@@ -7,10 +7,14 @@ namespace Hyrde.Challenge.Services
     {
         // You can use this HttpClient as a starting point to interface with the API of your choice.
         private readonly HttpClient _client;
+        private readonly string _baseUrl;
+        private readonly string _apiKey;
 
-        public WeatherService(HttpClient client)
+        public WeatherService(HttpClient client, IConfiguration configuration)
         {
             _client = client;
+            _baseUrl = configuration["WeatherApi:BaseUrl"];
+            _apiKey = configuration["WeatherApi:ApiKey"];
         }
 
         /// <summary>
@@ -18,15 +22,41 @@ namespace Hyrde.Challenge.Services
         /// </summary>
         public async Task<IEnumerable<Weather>> GetForecast()
         {
-            throw new NotImplementedException();
-        }
+            throw new NotImplementedException("GetForecast method is not implemented yet.");
 
+        }
         /// <summary>
         /// Get today's weather
         /// </summary>
-        public async Task<Weather> Today()
+        public async Task<Weather> Today(string cityName)
         {
-            throw new NotImplementedException();
+            string url = $"{_baseUrl}/current.json?key={_apiKey}&q={cityName}";
+
+            HttpResponseMessage response = await _client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                dynamic data = JsonConvert.DeserializeObject(json);
+
+                Weather weather = new Weather
+                {
+                    TempCelcius = (float)data.current.temp_c,
+                    ConditionText = data.current.condition.text,
+                    ConditionIcon = data.current.condition.icon,
+                    WindKph = (float)data.current.wind_kph,
+                    PercipitationMm = (float)data.current.precip_mm,
+                    Humidity = (int)data.current.humidity,
+                    City = data.location.name,
+                    Country = data.location.country,
+                    LocalTime = data.location.localtime
+                };
+
+                return weather;
+            }
+            else
+            {
+                throw new HttpRequestException("Failed to retrieve weather data.");
+            }
         }
     }
 }
