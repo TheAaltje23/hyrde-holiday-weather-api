@@ -9,9 +9,10 @@ namespace Hyrde.Challenge.Configuration
     {
         public static IServiceCollection ConfigureApiHttpClients(this IServiceCollection _services, IConfiguration configuration)
         {
-            var baseUrl = configuration.GetValue<string>("BaseUrl");
-            var apiKey = configuration.GetValue<string>("ApiKey");
-            _services.AddHttpClient<IWeatherService, WeatherService>(client => {
+            var baseUrl = configuration.GetValue<string>("WeatherApi:BaseUrl");
+            var apiKey = configuration.GetValue<string>("WeatherApi:ApiKey");
+            _services.AddHttpClient<IWeatherService, WeatherService>(client =>
+            {
                 client.BaseAddress = new Uri(baseUrl);
                 client.DefaultRequestHeaders.Add("api-key-header-name", apiKey);
             });
