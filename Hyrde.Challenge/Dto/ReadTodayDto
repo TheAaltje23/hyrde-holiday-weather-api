@@ -1,0 +1,16 @@
+namespace Hyrde.Challenge.Dto
+{
+    public class ReadTodayDto
+    {
+        private float TempFahrenheit { get; set; }
+        private string Country { get; set; }
+        private string City { get; set; }
+
+        public ReadTodayDto(Weather weather)
+        {
+            TempFahrenheit = weather.TempFahrenheit;
+            Country = weather.Country;
+            City = weather.City;
+        }
+    }
+}
