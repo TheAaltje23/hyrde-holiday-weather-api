@@ -13,8 +13,8 @@ namespace Hyrde.Challenge.Services
         public WeatherService(HttpClient client, IConfiguration configuration)
         {
             _client = client;
-            _baseUrl = configuration["WeatherApi:BaseUrl"];
-            _apiKey = configuration["WeatherApi:ApiKey"];
+            _baseUrl = configuration["WeatherApi:BaseUrl"] ?? throw new ArgumentException("WeatherApi:BaseUrl configuration is missing or null");
+            _apiKey = configuration["WeatherApi:ApiKey"] ?? throw new ArgumentException("WeatherApi:ApiKey configuration is missing or null");
         }
 
         /// <summary>
