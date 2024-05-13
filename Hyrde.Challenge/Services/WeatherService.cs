@@ -48,7 +48,7 @@ namespace Hyrde.Challenge.Services
                     Humidity = (int)data.current.humidity,
                     City = data.location.name,
                     Country = data.location.country,
-                    LocalTime = data.location.localtime
+                    DateTime = data.location.localtime
                 };
 
                 return weather;
