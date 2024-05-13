@@ -1,5 +1,4 @@
-﻿using Hyrde.Challenge.Controllers;
-using Hyrde.Challenge.Models;
+﻿using Hyrde.Challenge.Models;
 
 namespace Hyrde.Challenge.Services
 {

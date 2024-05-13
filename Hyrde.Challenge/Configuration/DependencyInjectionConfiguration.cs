@@ -1,7 +1,4 @@
 ﻿using Hyrde.Challenge.Services;
-using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Headers;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Hyrde.Challenge.Configuration
 {

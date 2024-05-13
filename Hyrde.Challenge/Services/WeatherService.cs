@@ -35,21 +35,20 @@ namespace Hyrde.Challenge.Services
             if (response.IsSuccessStatusCode)
             {
                 string json = await response.Content.ReadAsStringAsync();
-                dynamic data = JsonConvert.DeserializeObject(json);
+                dynamic? data = JsonConvert.DeserializeObject(json);
 
                 Weather weather = new Weather
                 {
-                    TempCelcius = (float)data.current.temp_c,
-                    ConditionText = data.current.condition.text,
-                    ConditionIcon = data.current.condition.icon,
-                    WindKph = (float)data.current.wind_kph,
-                    PrecipitationMm = (float)data.current.precip_mm,
-                    Humidity = (int)data.current.humidity,
-                    City = data.location.name,
-                    Country = data.location.country,
-                    DateTime = data.location.localtime
+                    TempCelcius = (float)data?.current.temp_c,
+                    ConditionText = data?.current.condition.text,
+                    ConditionIcon = data?.current.condition.icon,
+                    WindKph = (float)data?.current.wind_kph,
+                    PrecipitationMm = (float)data?.current.precip_mm,
+                    Humidity = (int)data?.current.humidity,
+                    City = data?.location.name,
+                    Country = data?.location.country,
+                    DateTime = data?.location.localtime
                 };
-
                 return weather;
             }
             else

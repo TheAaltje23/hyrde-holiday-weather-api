@@ -1,7 +1,6 @@
 using Hyrde.Challenge.Models;
 using Microsoft.AspNetCore.Mvc;
 using Hyrde.Challenge.Dto;
-using Microsoft.Extensions.Primitives;
 using Hyrde.Challenge.Services;
 
 namespace Hyrde.Challenge.Controllers
@@ -11,7 +10,6 @@ namespace Hyrde.Challenge.Controllers
     public class WeatherForecastController : ControllerBase
     {
         private readonly ILogger<WeatherForecastController> _logger;
-
         private readonly IWeatherService _service;
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger, IWeatherService service)
@@ -23,17 +21,23 @@ namespace Hyrde.Challenge.Controllers
         [HttpGet("GetToday")]
         public async Task<ResponseDto> GetToday(string cityName)
         {
+            _logger.LogInformation($"Received request for weather in {cityName}");
+
             if (string.IsNullOrEmpty(cityName))
             {
-                return new ResponseDto(success: false, data: null, errors: ["City name is required."], validationMessage: "City name is required.");
+                _logger.LogError("City name is required.");
+                return new ResponseDto(success: false, data: null, errors: ["City name is required."], validationMessage: "Validation failed.");
             }
 
             Weather weather = await _service.GetToday(cityName);
+
             if (weather == null)
             {
-                return new ResponseDto(success: false, data: null, errors: new List<string> { "City not found." }, validationMessage: "City not found.");
+                _logger.LogWarning($"Weather data not found for {cityName}");
+                return new ResponseDto(success: false, data: null, errors: new List<string> { "City not found." }, validationMessage: "Validation failed.");
             }
 
+            _logger.LogInformation($"Weather data retrieved successfully for {cityName}");
             return new ResponseDto(success: true, data: weather, errors: null, validationMessage: "Weather information retrieved successfully.");
         }
 

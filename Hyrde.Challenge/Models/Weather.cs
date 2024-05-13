@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace Hyrde.Challenge.Models
+﻿namespace Hyrde.Challenge.Models
 {
     public class Weather
     {
