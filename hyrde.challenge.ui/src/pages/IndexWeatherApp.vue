@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md page-container">
-    <div class="q-gutter-y-md column" style="max-width: 300px">
+    <div class="q-gutter-y-md column input-container" style="max-width: 300px">
       <q-input outlined v-model="text" bg-color="white" label="Enter a location">
         <template v-slot:prepend>
           <q-icon name="place" />
