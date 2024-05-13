@@ -1,30 +1,65 @@
 // app global css in SCSS form
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-.input-container {
+body {
+    background: rgb(7, 0, 40);
+    background: linear-gradient(180deg, rgba(7, 0, 40, 0.85) 35%, rgba(33, 186, 69, 0.75) 100%);
+}
+
+.page-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    min-height: 90vh;
+    min-height: 100vh;
     flex-direction: column;
     gap: 10px;
 }
 
-#search-btn {
-    margin-bottom: 20px;
+// OUTPUT
+#output-wrapper {
+    padding: 5px;
+    max-width: 300px;
+    color: white;
+    display: flex;
+    flex-direction: column;
 }
 
-#list-container {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
+#location-wrapper>h2 {
+    font-size: 1.3rem;
+    text-align: center;
 }
 
-#iconAndText {
+#condition-wrapper>h3 {
+    font-size: 2rem;
+    text-align: center;
+}
+
+#icon-temp-wrapper {
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
+    font-size: 2rem;
 }
 
-#weatherIcon {
-    max-height: 35px;
+#info-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.infos {
+    flex: 50%;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    padding-left: 20px;
 }

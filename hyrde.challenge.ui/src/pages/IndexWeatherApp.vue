@@ -1,7 +1,7 @@
 <template>
-  <div class="q-pa-md input-container">
+  <div class="q-pa-md page-container">
     <div class="q-gutter-y-md column" style="max-width: 300px">
-      <q-input outlined bottom-slots v-model="text" label="Enter a city name">
+      <q-input outlined v-model="text" bg-color="white" label="Enter a location">
         <template v-slot:prepend>
           <q-icon name="place" />
         </template>
@@ -11,67 +11,55 @@
       </q-input>
     </div>
     <q-btn id="search-btn" @click="fetchData" color="primary" label="Search" />
-    <!--LIST 1-->
-    <div id="list-container" v-if="weatherToday">
-      <q-list id="list" bordered>
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon color="primary" name="thermostat"/>
-          </q-item-section>
-          <q-item-section>{{weatherToday.data["tempCelcius"]}} degrees Celcius</q-item-section>
-        </q-item>
-      </q-list>
-      <q-list id="list" bordered>
-        <q-item clickable v-ripple v-if="weatherToday">
-          <q-item-section id="iconAndText"><img id="weatherIcon" :src="weatherToday.data['conditionIcon']" alt="Weather Icon">{{weatherToday.data["conditionText"]}}</q-item-section>
-        </q-item>
-      </q-list>
-    </div>
-    <!--LIST 2-->
-    <div id="list-container" v-if="weatherToday">
-      <q-list id="list" bordered>
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon color="primary" name="air" />
-          </q-item-section>
-          <q-item-section>Wind: {{weatherToday.data["windKph"]}} km/h</q-item-section>
-        </q-item>
-      </q-list>
-      <q-list id="list" bordered>
-        <q-item clickable v-ripple v-if="weatherToday">
-          <q-item-section avatar>
-            <q-icon color="primary" name="water_drop" />
-          </q-item-section>
-          <q-item-section>Precipitation: {{weatherToday.data["percipitationMm"]}}mm</q-item-section>
-        </q-item>
-      </q-list>
-      <q-list id="list" bordered>
-        <q-item clickable v-ripple v-if="weatherToday">
-          <q-item-section avatar>
-            <q-icon color="primary" name="water" />
-          </q-item-section>
-          <q-item-section>Humidity: {{weatherToday.data["humidity"]}}%</q-item-section>
-        </q-item>
-      </q-list>
-    </div>
-    <!--LIST 3-->
-    <div id="list-container" v-if="weatherToday">
-      <q-list id="list" bordered>
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon color="primary" name="place" />
-          </q-item-section>
-          <q-item-section> {{weatherToday.data["city"]}}, {{weatherToday.data["country"]}}</q-item-section>
-        </q-item>
-      </q-list>
-      <q-list id="list" bordered>
-        <q-item clickable v-ripple v-if="weatherToday">
-          <q-item-section avatar>
-            <q-icon color="primary" name="calendar_today" />
-          </q-item-section>
-          <q-item-section>{{weatherToday.data["localTime"]}}</q-item-section>
-        </q-item>
-      </q-list>
+    <div id="output-wrapper" v-if="weatherToday">
+      <div id="location-wrapper">
+        <h2>{{weatherToday.data["city"]}}, {{weatherToday.data["country"]}}</h2>
+      </div>
+      <div id="condition-wrapper">
+        <h3>{{weatherToday.data["conditionText"]}}</h3>
+      </div>
+      <div id="icon-temp-wrapper">
+        <div><img id="weatherIcon" :src="weatherToday.data['conditionIcon']" alt="Weather Icon"></div>
+        <div>{{weatherToday.data["tempCelcius"]}}°C</div>
+      </div>
+      <div id="info-wrapper">
+        <div id="windspeed" class="infos">
+          <div class="info-row">
+            <div><q-icon color="primary" name="air" /></div>
+            <div>
+              <div id="info-title">Wind</div>
+              <div id="info-data">{{weatherToday.data["windKph"]}}km/h</div>
+            </div>
+          </div>
+        </div>
+        <div id="winddegree" class="infos">
+          <div class="info-row">
+            <div><q-icon color="primary" name="air" /></div>
+            <div>
+              <div id="info-title">Wind</div>
+              <div id="info-data">{{weatherToday.data["windKph"]}}km/h</div>
+            </div>
+          </div>
+        </div>
+        <div id= "precipitation" class="infos">
+          <div class="info-row">
+            <div><q-icon color="primary" name="water_drop" /></div>
+            <div>
+              <div id="info-title">Precipitation</div>
+              <div id="info-data">{{weatherToday.data["precipitationMm"]}}mm</div>
+            </div>
+          </div>
+        </div>
+        <div id ="humidity" class="infos">
+          <div class="info-row">
+            <div><q-icon color="primary" name="water" /></div>
+            <div>
+              <div id="info-title">Humidity</div>
+              <div id="info-data">{{weatherToday.data["humidity"]}}%</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
