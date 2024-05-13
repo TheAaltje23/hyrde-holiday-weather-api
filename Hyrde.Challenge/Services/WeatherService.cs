@@ -28,7 +28,7 @@ namespace Hyrde.Challenge.Services
         /// <summary>
         /// Get today's weather
         /// </summary>
-        public async Task<Weather> Today(string cityName)
+        public async Task<Weather> GetToday(string cityName)
         {
             string url = $"{_baseUrl}/current.json?key={_apiKey}&q={cityName}";
 

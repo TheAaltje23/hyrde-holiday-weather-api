@@ -13,7 +13,10 @@ namespace Hyrde.Challenge.Configuration
             var apiKey = configuration.GetValue<string>("WeatherApi:ApiKey");
             _services.AddHttpClient<IWeatherService, WeatherService>(client =>
             {
-                client.BaseAddress = new Uri(baseUrl);
+                if (baseUrl != null)
+                {
+                    client.BaseAddress = new Uri(baseUrl);
+                }
                 client.DefaultRequestHeaders.Add("api-key-header-name", apiKey);
             });
             return _services;

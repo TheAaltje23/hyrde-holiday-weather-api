@@ -28,7 +28,7 @@ namespace Hyrde.Challenge.Controllers
                 return new ResponseDto(success: false, data: null, errors: ["City name is required."], validationMessage: "City name is required.");
             }
 
-            Weather weather = await _service.Today(cityName);
+            Weather weather = await _service.GetToday(cityName);
             if (weather == null)
             {
                 return new ResponseDto(success: false, data: null, errors: new List<string> { "City not found." }, validationMessage: "City not found.");
