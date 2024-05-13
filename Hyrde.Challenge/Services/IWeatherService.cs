@@ -5,7 +5,7 @@ namespace Hyrde.Challenge.Services
 {
     public interface IWeatherService
     {
-        Task<IEnumerable<Weather>> GetForecast();
-        Task<Weather> GetToday(string cityName);
+        Task<IEnumerable<Weather>> GetForecast(string query);
+        Task<Weather> GetToday(string query);
     }
 }

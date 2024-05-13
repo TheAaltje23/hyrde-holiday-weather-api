@@ -17,20 +17,19 @@ namespace Hyrde.Challenge.Services
             _apiKey = configuration["WeatherApi:ApiKey"] ?? throw new ArgumentException("WeatherApi:ApiKey configuration is missing or null");
         }
 
-        /// <summary>
-        /// Get the forecast of the oncoming few days
-        /// </summary>
-        public async Task<IEnumerable<Weather>> GetForecast()
+        public async Task<IEnumerable<Weather>> GetForecast(string query)
         {
+            // PLACEHOLDER
+            string url = $"{_baseUrl}/current.json?key={_apiKey}&q={query}";
+            HttpResponseMessage response = await _client.GetAsync(url);
+
             throw new NotImplementedException("GetForecast method is not implemented yet.");
 
         }
-        /// <summary>
-        /// Get today's weather
-        /// </summary>
-        public async Task<Weather> GetToday(string cityName)
+
+        public async Task<Weather> GetToday(string query)
         {
-            string url = $"{_baseUrl}/current.json?key={_apiKey}&q={cityName}";
+            string url = $"{_baseUrl}/current.json?key={_apiKey}&q={query}";
 
             HttpResponseMessage response = await _client.GetAsync(url);
             if (response.IsSuccessStatusCode)
