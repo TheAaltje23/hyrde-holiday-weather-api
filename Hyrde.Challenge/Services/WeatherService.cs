@@ -47,7 +47,8 @@ namespace Hyrde.Challenge.Services
                     Humidity = (int)data?.current.humidity,
                     City = data?.location.name,
                     Country = data?.location.country,
-                    DateTime = data?.location.localtime
+                    Region = data?.location.region,
+                    WindDir = data?.current.wind_dir
                 };
                 return weather;
             }

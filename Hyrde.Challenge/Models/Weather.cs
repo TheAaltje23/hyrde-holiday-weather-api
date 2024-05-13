@@ -10,6 +10,7 @@
         public int Humidity { get; set; }
         public string? Country { get; set; }
         public string? City { get; set; }
-        public DateTime DateTime { get; set; }
+        public string? Region { get; set; }
+        public string? WindDir { get; set; }
     }
 }

@@ -13,7 +13,7 @@
     <q-btn id="search-btn" @click="fetchData" color="primary" label="Search" />
     <div id="output-wrapper" v-if="weatherToday">
       <div id="location-wrapper">
-        <h2>{{weatherToday.data["city"]}}, {{weatherToday.data["country"]}}</h2>
+        <h2>{{weatherToday.data["city"]}}, {{weatherToday.data["region"]}}, {{weatherToday.data["country"]}}</h2>
       </div>
       <div id="condition-wrapper">
         <h3>{{weatherToday.data["conditionText"]}}</h3>
@@ -34,10 +34,10 @@
         </div>
         <div id="winddegree" class="infos">
           <div class="info-row">
-            <div><q-icon color="primary" name="air" /></div>
+            <div><q-icon color="primary" name="explore" /></div>
             <div>
-              <div id="info-title">Wind</div>
-              <div id="info-data">{{weatherToday.data["windKph"]}}km/h</div>
+              <div id="info-title">Direction</div>
+              <div id="info-data">{{weatherToday.data["windDir"]}}</div>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5114/WeatherForecast/GetToday?cityName=${text.value}`)
+        const response = await axios.get(`http://localhost:5114/WeatherForecast/GetToday?query=${text.value}`)
         weatherToday.value = response.data
         console.log(response.data)
       } catch (error) {

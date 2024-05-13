@@ -19,25 +19,25 @@ namespace Hyrde.Challenge.Controllers
         }
 
         [HttpGet("GetToday")]
-        public async Task<ResponseDto> GetToday(string cityName)
+        public async Task<ResponseDto> GetToday(string query)
         {
-            _logger.LogInformation($"Received request for weather in {cityName}");
+            _logger.LogInformation($"Received request for weather at {query}");
 
-            if (string.IsNullOrEmpty(cityName))
+            if (string.IsNullOrEmpty(query))
             {
-                _logger.LogError("City name is required.");
-                return new ResponseDto(success: false, data: null, errors: ["City name is required."], validationMessage: "Validation failed.");
+                _logger.LogError("Location is required.");
+                return new ResponseDto(success: false, data: null, errors: ["Location is required."], validationMessage: "Validation failed.");
             }
 
-            Weather weather = await _service.GetToday(cityName);
+            Weather weather = await _service.GetToday(query);
 
             if (weather == null)
             {
-                _logger.LogWarning($"Weather data not found for {cityName}");
-                return new ResponseDto(success: false, data: null, errors: new List<string> { "City not found." }, validationMessage: "Validation failed.");
+                _logger.LogWarning($"Weather data not found for {query}");
+                return new ResponseDto(success: false, data: null, errors: new List<string> { "Location not found." }, validationMessage: "Validation failed.");
             }
 
-            _logger.LogInformation($"Weather data retrieved successfully for {cityName}");
+            _logger.LogInformation($"Weather data retrieved successfully for {query}");
             return new ResponseDto(success: true, data: weather, errors: null, validationMessage: "Weather information retrieved successfully.");
         }
 
