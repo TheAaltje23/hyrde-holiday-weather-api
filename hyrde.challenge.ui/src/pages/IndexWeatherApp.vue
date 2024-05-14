@@ -1,16 +1,34 @@
 <template>
   <div class="q-pa-md page-container">
-    <div class="q-gutter-y-md column input-container" style="max-width: 300px">
-      <q-input outlined v-model="text" bg-color="white" label="Enter a location">
-        <template v-slot:prepend>
-          <q-icon name="place" />
-        </template>
-        <template v-slot:append>
-          <q-icon name="close" @click="clearText()" class="cursor-pointer" />
-        </template>
-      </q-input>
+    <div id="input-btn-container">
+      <div class="q-gutter-y-md column input-container" style="max-width: 300px">
+        <q-input outlined v-model="text" bg-color="white" label="Enter a location" @keyup.enter="fetchData">
+          <template v-slot:prepend>
+            <q-icon name="place" />
+          </template>
+          <template v-slot:append>
+            <q-icon name="close" @click="clearText()" class="cursor-pointer" />
+          </template>
+        </q-input>
+      </div>
+      <q-btn id="search-btn" @click="fetchData" color="primary" label="Search" />
     </div>
-    <q-btn id="search-btn" @click="fetchData" color="primary" label="Search" />
+    <div id="toggle-container" v-if="weatherToday">
+      <q-btn-toggle
+        v-model="model"
+        class="my-custom-toggle"
+        no-caps
+        rounded
+        unelevated
+        toggle-color="primary"
+        color="positive"
+        text-color="white"
+        :options="[
+          {label: 'Today', value: 'today'},
+          {label: 'Forecast', value: 'forecast'}
+        ]"
+      />
+    </div>
     <div id="output-wrapper" v-if="weatherToday">
       <div id="location-wrapper">
         <h2>{{weatherToday.data["city"]}}, {{weatherToday.data["region"]}}, {{weatherToday.data["country"]}}</h2>
@@ -25,7 +43,7 @@
       <div id="info-wrapper">
         <div id="windspeed" class="infos">
           <div class="info-row">
-            <div><q-icon color="primary" name="air" /></div>
+            <div><q-icon class="info-icon" color="primary" name="air" /></div>
             <div>
               <div id="info-title">Wind</div>
               <div id="info-data">{{weatherToday.data["windKph"]}}km/h</div>
@@ -34,7 +52,7 @@
         </div>
         <div id="winddegree" class="infos">
           <div class="info-row">
-            <div><q-icon color="primary" name="explore" /></div>
+            <div><q-icon class="info-icon" color="primary" name="explore" /></div>
             <div>
               <div id="info-title">Direction</div>
               <div id="info-data">{{weatherToday.data["windDir"]}}</div>
@@ -43,7 +61,7 @@
         </div>
         <div id= "precipitation" class="infos">
           <div class="info-row">
-            <div><q-icon color="primary" name="water_drop" /></div>
+            <div><q-icon class="info-icon" color="primary" name="water_drop" /></div>
             <div>
               <div id="info-title">Precipitation</div>
               <div id="info-data">{{weatherToday.data["precipitationMm"]}}mm</div>
@@ -52,7 +70,7 @@
         </div>
         <div id ="humidity" class="infos">
           <div class="info-row">
-            <div><q-icon color="primary" name="water" /></div>
+            <div><q-icon class="info-icon" color="primary" name="water" /></div>
             <div>
               <div id="info-title">Humidity</div>
               <div id="info-data">{{weatherToday.data["humidity"]}}%</div>
