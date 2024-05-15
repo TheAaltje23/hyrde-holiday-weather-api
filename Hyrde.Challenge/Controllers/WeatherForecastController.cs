@@ -2,6 +2,8 @@ using Hyrde.Challenge.Models;
 using Microsoft.AspNetCore.Mvc;
 using Hyrde.Challenge.Dto;
 using Hyrde.Challenge.Services;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.Net.Http.Headers;
 
 namespace Hyrde.Challenge.Controllers
 {
@@ -34,7 +36,7 @@ namespace Hyrde.Challenge.Controllers
             if (weather == null)
             {
                 _logger.LogWarning($"Weather data not found for {query}");
-                return new ResponseDto(success: false, data: null, errors: new List<string> { "Location not found." }, validationMessage: "Validation failed.");
+                return new ResponseDto(false, null, ["Location not found."], "Validation failed.");
             }
 
             _logger.LogInformation($"Weather data retrieved successfully for {query}");
@@ -42,24 +44,12 @@ namespace Hyrde.Challenge.Controllers
         }
 
         [HttpGet("GetForecast")]
-        public IEnumerable<Weather> GetForecast()
+        public async Task<ResponseDto> GetForecast(string query)
         {
-            // Replace this implementation with your own.
-            return new List<Weather>() {
-                new Weather()
-                {
-                    City = "Maarssen",
-                    Country = "The Netherlands",
-                },
-                new Weather() {
-                    City = "Maarssen",
-                    Country = "The Netherlands",
-                },
-                new Weather() {
-                    City = "Maarssen",
-                    Country = "The Netherlands",
-                }
-            };
+            IEnumerable<Weather> forecast = await _service.GetForecast(query);
+
+            _logger.LogInformation($"Weather data retrieved successfully for {query}");
+            return new ResponseDto(true, forecast, null, "Weather information retrieved successfully.");
         }
     }
 }

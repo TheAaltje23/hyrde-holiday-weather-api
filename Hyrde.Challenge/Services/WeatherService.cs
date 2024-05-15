@@ -17,16 +17,6 @@ namespace Hyrde.Challenge.Services
             _apiKey = configuration["WeatherApi:ApiKey"] ?? throw new ArgumentException("WeatherApi:ApiKey configuration is missing or null");
         }
 
-        public async Task<IEnumerable<Weather>> GetForecast(string query)
-        {
-            // PLACEHOLDER
-            string url = $"{_baseUrl}/current.json?key={_apiKey}&q={query}";
-            HttpResponseMessage response = await _client.GetAsync(url);
-
-            throw new NotImplementedException("GetForecast method is not implemented yet.");
-
-        }
-
         public async Task<Weather> GetToday(string query)
         {
             string url = $"{_baseUrl}/current.json?key={_apiKey}&q={query}";
@@ -51,6 +41,40 @@ namespace Hyrde.Challenge.Services
                     WindDir = data?.current.wind_dir
                 };
                 return weather;
+            }
+            else
+            {
+                throw new HttpRequestException("Failed to retrieve weather data.");
+            }
+        }
+
+        public async Task<IEnumerable<Weather>> GetForecast(string query)
+        {
+            string url = $"{_baseUrl}/forecast.json?key={_apiKey}&q={query}&days=3";
+
+            HttpResponseMessage response = await _client.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+                dynamic? data = JsonConvert.DeserializeObject(json);
+
+                List<Weather> forecast = new List<Weather>();
+
+                if (data != null)
+                {
+                    foreach (var f in data.forecast.forecastday)
+                    {
+                        Weather weather = new Weather
+                        {
+                            ForecastDate = f.date,
+                            ConditionIcon = f.day.condition.icon,
+                            MaxTempCelcius = f.day.maxtemp_c,
+                            MinTempCelcius = f.day.mintemp_c,
+                        };
+                        forecast.Add(weather);
+                    }
+                }
+                return forecast;
             }
             else
             {
