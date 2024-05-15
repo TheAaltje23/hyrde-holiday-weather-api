@@ -50,7 +50,7 @@ namespace Hyrde.Challenge.Services
 
         public async Task<IEnumerable<Weather>> GetForecast(string query)
         {
-            string url = $"{_baseUrl}/forecast.json?key={_apiKey}&q={query}&days=3";
+            string url = $"{_baseUrl}/forecast.json?key={_apiKey}&q={query}&days=5";
 
             HttpResponseMessage response = await _client.GetAsync(url);
             if (response.IsSuccessStatusCode)
@@ -66,7 +66,7 @@ namespace Hyrde.Challenge.Services
                     {
                         Weather weather = new Weather
                         {
-                            ForecastDate = f.date,
+                            ForecastDate = ConvertDate((string)f.date),
                             ConditionIcon = f.day.condition.icon,
                             MaxTempCelcius = f.day.maxtemp_c,
                             MinTempCelcius = f.day.mintemp_c,
@@ -80,6 +80,13 @@ namespace Hyrde.Challenge.Services
             {
                 throw new HttpRequestException("Failed to retrieve weather data.");
             }
+        }
+
+        public string ConvertDate(string date)
+        {
+            DateTime dateTime = DateTime.ParseExact(date, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+            string dayOfWeek = dateTime.ToString("dddd");
+            return dayOfWeek;
         }
     }
 }
