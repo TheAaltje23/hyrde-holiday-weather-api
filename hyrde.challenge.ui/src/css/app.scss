@@ -15,30 +15,26 @@ body {
 .page-container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
-    gap: 15px;
 }
 
 #input-btn-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 10px;
     max-width: min(95vw, 500px);
+    margin-top: 10px;
+    gap: 10px;
 }
 
 #toggle-container {
-    padding: 20px;
+    padding: 25px;
 }
 
 // OUTPUT TODAY
 #output-wrapper-today {
     display: flex;
     flex-direction: column;
-    padding: 5px;
     max-width: min(95vw, 500px);
     color: $white;
 }
@@ -61,21 +57,35 @@ body {
     gap: 5px;
 }
 
+#max-min-temp-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 1.1rem;
+    padding: 10px;
+    text-align: center;
+}
+
 #info-wrapper {
     display: flex;
     flex-wrap: wrap;
+    gap: 10px;
+    padding: 5px;
 }
 
 .infos {
-    flex: 50%;
+    flex: 45%;
+    background-color: $secondary;
+    border: 2px solid $primary;
+    border-radius: 20px;
 }
 
 .info-row {
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 10px;
     padding: 10px;
-    padding-left: 25%;
 }
 
 .info-icon {
@@ -89,10 +99,12 @@ body {
 // OUTPUT FORECAST
 #output-wrapper-forecast {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 20px;
-    padding: 5px;
-    max-width: min(95vw, 500px);
+    max-width: min(95vw, 600px);
     color: $white;
+    padding: 20px;
 }
 
 #forecast-items {
@@ -103,6 +115,7 @@ body {
 
 .forecast-day {
     text-align: center;
+    font-weight: bold;
 }
 
 .weather-icon {
@@ -111,15 +124,18 @@ body {
 }
 
 .forecast-temp {
+    padding-top: 10px;
     display: flex;
     justify-content: space-evenly;
     gap: 5px;
 }
 
-.forecast-temp-max {
+.forecast-temp-max,
+#today-temp-max {
     font-weight: bold;
 }
 
-.forecast-temp-min {
+.forecast-temp-min,
+#today-temp-min {
     font-weight: lighter;
 }
