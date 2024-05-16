@@ -19,8 +19,8 @@
         class="today-forecast-toggle"
         no-caps
         unelevated
-        toggle-color="primary"
-        color="positive"
+        toggle-color="positive"
+        color="primary"
         text-color="white"
         :options="[
           {label: 'Today', value: 'today'},
@@ -81,7 +81,7 @@
     </div>
     <div id="output-wrapper-forecast" v-if="weatherForecast && model === 'forecast'">
       <div id="forecast-items" v-for="(forecastItem, index) in weatherForecast.data" :key="index">
-        <div class="forecast-day">{{forecastItem["forecastDate"]}}</div>
+        <div class="forecast-day">{{index === 0 ? 'Today' : index === 1 ? 'Tomorrow' : forecastItem["forecastDate"]}}</div>
         <div class="weather-icon"><img :src="forecastItem['conditionIcon']" alt="Weather Icon"></div>
         <div class="forecast-temp">
           <div class="forecast-temp-max">{{forecastItem["maxTempCelcius"]}}°C</div>

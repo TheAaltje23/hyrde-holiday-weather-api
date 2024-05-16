@@ -1,4 +1,5 @@
-﻿using Hyrde.Challenge.Models;
+﻿using System.Globalization;
+using Hyrde.Challenge.Models;
 using Newtonsoft.Json;
 
 namespace Hyrde.Challenge.Services
@@ -84,8 +85,8 @@ namespace Hyrde.Challenge.Services
 
         public string ConvertDate(string date)
         {
-            DateTime dateTime = DateTime.ParseExact(date, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-            string dayOfWeek = dateTime.ToString("dddd");
+            DateTime dateTime = DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            string dayOfWeek = dateTime.ToString("ddd", new CultureInfo("en-US"));
             return dayOfWeek;
         }
     }
