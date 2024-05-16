@@ -99,11 +99,16 @@ body {
 // OUTPUT FORECAST
 #output-wrapper-forecast {
     display: flex;
+    flex-direction: column;
+    max-width: min(95vw, 600px);
+    color: $white;
+}
+
+#forecast-wrapper {
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-    max-width: min(95vw, 600px);
-    color: $white;
     padding: 20px;
 }
 
