@@ -2,7 +2,7 @@
   <div class="q-pa-md page-container">
     <div id="input-btn-container">
       <div class="q-gutter-y-md column input-container" style="max-width: 300px">
-        <q-input outlined v-model="text" bg-color="white" label="Enter a location" @keyup.enter="fetchDataToday">
+        <q-input outlined rounded v-model="text" bg-color="white" label="Enter a location" @keyup.enter="fetchWeather">
           <template v-slot:prepend>
             <q-icon name="place" />
           </template>
@@ -11,13 +11,14 @@
           </template>
         </q-input>
       </div>
-      <q-btn id="search-btn" @click="fetchDataToday" color="primary" label="Search" />
+      <q-btn round id="search-btn" color="primary" icon="search" @click="fetchWeather" />
     </div>
-    <div id="toggle-container" v-if="weatherToday">
+    <div id="toggle-container" v-if="weatherToday || weatherForecast">
       <q-btn-toggle
         v-model="model"
         class="today-forecast-toggle"
         no-caps
+        rounded
         unelevated
         toggle-color="positive"
         color="primary"
@@ -26,7 +27,6 @@
           {label: 'Today', value: 'today'},
           {label: 'Forecast', value: 'forecast'}
         ]"
-        @update:model-value="handleToggle"
       />
     </div>
     <div id="output-wrapper-today" v-if="weatherToday && model === 'today'">
@@ -39,6 +39,10 @@
       <div id="icon-temp-wrapper">
         <div class="weather-icon"><img :src="weatherToday.data['conditionIcon']" alt="Weather Icon"></div>
         <div>{{weatherToday.data["tempCelcius"]}}°C</div>
+      </div>
+      <div id="max-min-temp-wrapper" v-if="weatherForecast && weatherForecast.data.length > 0">
+        <div id="today-temp-max">Max: {{weatherForecast.data[0]["maxTempCelcius"]}}°C</div>
+        <div id="today-temp-min">Min: {{weatherForecast.data[0]["minTempCelcius"]}}°C</div>
       </div>
       <div id="info-wrapper">
         <div id="windspeed" class="infos">
@@ -103,32 +107,16 @@ export default {
     const weatherForecast = ref(null)
     const model = ref('today')
 
-    const fetchDataToday = async () => {
+    const fetchWeather = async () => {
       try {
-        const response = await axios.get(`http://localhost:5114/WeatherForecast/GetToday?query=${text.value}`)
-        weatherToday.value = response.data
-        console.log(response.data)
+        const responseToday = await axios.get(`http://localhost:5114/WeatherForecast/GetToday?query=${text.value}`)
+        const responseForecast = await axios.get(`http://localhost:5114/WeatherForecast/GetForecast?query=${text.value}`)
+        weatherToday.value = responseToday.data
+        weatherForecast.value = responseForecast.data
+        console.log(responseToday.data)
+        console.log(responseForecast.data)
       } catch (error) {
         console.error('Error fetching data:', error)
-      }
-    }
-
-    const fetchDataForecast = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5114/WeatherForecast/GetForecast?query=${text.value}`)
-        weatherForecast.value = response.data
-        console.log(response.data)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    }
-
-    const handleToggle = () => {
-      if (model.value === 'today') {
-        fetchDataToday()
-      }
-      if (model.value === 'forecast') {
-        fetchDataForecast()
       }
     }
 
@@ -143,9 +131,7 @@ export default {
       weatherToday,
       weatherForecast,
       model,
-      fetchDataToday,
-      fetchDataForecast,
-      handleToggle,
+      fetchWeather,
       clearText
     }
   }
