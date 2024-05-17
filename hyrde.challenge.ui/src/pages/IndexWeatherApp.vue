@@ -2,12 +2,15 @@
   <div class="q-pa-md page-container">
     <div id="input-btn-container">
       <div class="q-gutter-y-md column input-container" style="max-width: 300px">
-        <q-input outlined rounded v-model="text" bg-color="white" label="Enter a location" @keyup.enter="fetchWeather">
+        <q-input autofocus outlined rounded v-model="text" bg-color="white" label="Enter a location" @keyup.enter="fetchWeather" :error="hasError" :error-message="errorMessage" :loading="isLoading">
           <template v-slot:prepend>
             <q-icon name="place" />
           </template>
           <template v-slot:append>
             <q-icon name="close" @click="clearText()" class="cursor-pointer" />
+          </template>
+          <template v-slot:loading>
+            <q-spinner-dots color="primary" size="20px" />
           </template>
         </q-input>
       </div>
@@ -112,17 +115,38 @@ export default {
     const weatherToday = ref(null)
     const weatherForecast = ref(null)
     const model = ref('today')
+    const isLoading = ref(false)
+    const hasError = ref(false)
+    const errorMessage = ref('')
 
     const fetchWeather = async () => {
+      if (text.value.trim() === '') {
+        hasError.value = true
+        errorMessage.value = 'Please enter a location'
+        return
+      }
+
       try {
+        isLoading.value = true
+        hasError.value = false
+        errorMessage.value = ''
+
         const responseToday = await axios.get(`http://localhost:5114/WeatherForecast/GetToday?query=${text.value}`)
         const responseForecast = await axios.get(`http://localhost:5114/WeatherForecast/GetForecast?query=${text.value}`)
+        if (responseToday.data.errors || responseForecast.data.errors) {
+          throw new Error(responseToday.data.errors || responseForecast.data.errors)
+        }
         weatherToday.value = responseToday.data
         weatherForecast.value = responseForecast.data
         console.log(responseToday.data)
         console.log(responseForecast.data)
+
+        isLoading.value = false
       } catch (error) {
         console.error('Error fetching data:', error)
+        isLoading.value = false
+        hasError.value = true
+        errorMessage.value = error.message
       }
     }
 
@@ -130,6 +154,9 @@ export default {
       text.value = ''
       weatherToday.value = null
       weatherForecast.value = null
+      isLoading.value = false
+      hasError.value = false
+      errorMessage.value = ''
     }
 
     return {
@@ -137,6 +164,9 @@ export default {
       weatherToday,
       weatherForecast,
       model,
+      isLoading,
+      hasError,
+      errorMessage,
       fetchWeather,
       clearText
     }

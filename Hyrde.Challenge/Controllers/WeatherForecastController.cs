@@ -28,7 +28,7 @@ namespace Hyrde.Challenge.Controllers
             if (weather == null)
             {
                 _logger.LogWarning("Current weather data not found or error occurred for query: {Query}", query);
-                return new ResponseDto(false, null, ["Location not found or error occurred while retrieving current weather data."], "Validation failed.");
+                return new ResponseDto(false, null, ["Location not found or error occurred while retrieving current weather data"], "Validation failed");
             }
 
             var currentWeather = new ReadCurrentDto
@@ -46,7 +46,7 @@ namespace Hyrde.Challenge.Controllers
             };
 
             _logger.LogInformation("Current weather data retrieved successfully for query: {Query}", query);
-            return new ResponseDto(true, currentWeather, null, "Current weather information retrieved successfully.");
+            return new ResponseDto(true, currentWeather, null, "Current weather information retrieved successfully");
         }
 
         [HttpGet("GetForecast")]
@@ -59,7 +59,7 @@ namespace Hyrde.Challenge.Controllers
             if (forecast == null)
             {
                 _logger.LogWarning("Forecast weather data not found or error occurred for query: {Query}", query);
-                return new ResponseDto(false, null, ["Location not found or error occurred while retrieving forecast weather data."], "Validation failed.");
+                return new ResponseDto(false, null, ["Location not found or error occurred while retrieving forecast weather data"], "Validation failed");
             }
 
             var forecastWeather = forecast.Select(weatherObj => new ReadForecastDto
@@ -71,7 +71,7 @@ namespace Hyrde.Challenge.Controllers
             });
 
             _logger.LogInformation("Forecast data retrieved successfully for query: {Query}", query);
-            return new ResponseDto(true, forecastWeather, null, "Forecast weather information retrieved successfully.");
+            return new ResponseDto(true, forecastWeather, null, "Forecast weather information retrieved successfully");
         }
     }
 }
