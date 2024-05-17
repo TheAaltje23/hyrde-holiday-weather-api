@@ -1,5 +1,3 @@
-using Hyrde.Challenge.Models;
-
 namespace Hyrde.Challenge.Dto
 {
     public class ReadForecastDto

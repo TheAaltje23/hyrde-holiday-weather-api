@@ -2,8 +2,6 @@ using Hyrde.Challenge.Models;
 using Microsoft.AspNetCore.Mvc;
 using Hyrde.Challenge.Dto;
 using Hyrde.Challenge.Services;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.Net.Http.Headers;
 
 namespace Hyrde.Challenge.Controllers
 {
@@ -23,20 +21,14 @@ namespace Hyrde.Challenge.Controllers
         [HttpGet("GetToday")]
         public async Task<ResponseDto> GetToday(string query)
         {
-            _logger.LogInformation($"Received request for weather at {query}");
+            _logger.LogInformation("Received request for current weather with query: {Query}", query);
 
-            if (string.IsNullOrEmpty(query))
-            {
-                _logger.LogError("Location is required.");
-                return new ResponseDto(success: false, data: null, errors: ["Location is required."], validationMessage: "Validation failed.");
-            }
-
-            Weather weather = await _service.GetToday(query);
+            Weather? weather = await _service.GetToday(query);
 
             if (weather == null)
             {
-                _logger.LogWarning($"Weather data not found for {query}");
-                return new ResponseDto(false, null, ["Location not found."], "Validation failed.");
+                _logger.LogWarning("Current weather data not found or error occurred for query: {Query}", query);
+                return new ResponseDto(false, null, ["Location not found or error occurred while retrieving current weather data."], "Validation failed.");
             }
 
             var currentWeather = new ReadCurrentDto
@@ -53,14 +45,22 @@ namespace Hyrde.Challenge.Controllers
                 Humidity = weather.Humidity
             };
 
-            _logger.LogInformation($"Weather data retrieved successfully for {query}");
-            return new ResponseDto(success: true, data: currentWeather, errors: null, validationMessage: "Weather information retrieved successfully.");
+            _logger.LogInformation("Current weather data retrieved successfully for query: {Query}", query);
+            return new ResponseDto(true, currentWeather, null, "Current weather information retrieved successfully.");
         }
 
         [HttpGet("GetForecast")]
         public async Task<ResponseDto> GetForecast(string query)
         {
-            IEnumerable<Weather> forecast = await _service.GetForecast(query);
+            _logger.LogInformation("Received request for forecast weather with query: {Query}", query);
+
+            IEnumerable<Weather>? forecast = await _service.GetForecast(query);
+
+            if (forecast == null)
+            {
+                _logger.LogWarning("Forecast weather data not found or error occurred for query: {Query}", query);
+                return new ResponseDto(false, null, ["Location not found or error occurred while retrieving forecast weather data."], "Validation failed.");
+            }
 
             var forecastWeather = forecast.Select(weatherObj => new ReadForecastDto
             {
@@ -70,8 +70,8 @@ namespace Hyrde.Challenge.Controllers
                 MinTempCelcius = weatherObj.MinTempCelcius
             });
 
-            _logger.LogInformation($"Weather data retrieved successfully for {query}");
-            return new ResponseDto(true, forecastWeather, null, "Weather information retrieved successfully.");
+            _logger.LogInformation("Forecast data retrieved successfully for query: {Query}", query);
+            return new ResponseDto(true, forecastWeather, null, "Forecast weather information retrieved successfully.");
         }
     }
 }
