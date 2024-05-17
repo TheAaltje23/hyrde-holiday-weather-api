@@ -39,8 +39,22 @@ namespace Hyrde.Challenge.Controllers
                 return new ResponseDto(false, null, ["Location not found."], "Validation failed.");
             }
 
+            var currentWeather = new ReadCurrentDto
+            {
+                City = weather.City,
+                Region = weather.Region,
+                Country = weather.Country,
+                ConditionText = weather.ConditionText,
+                ConditionIcon = weather.ConditionIcon,
+                TempCelcius = weather.TempCelcius,
+                WindKph = weather.WindKph,
+                WindDir = weather.WindDir,
+                PrecipitationMm = weather.PrecipitationMm,
+                Humidity = weather.Humidity
+            };
+
             _logger.LogInformation($"Weather data retrieved successfully for {query}");
-            return new ResponseDto(success: true, data: weather, errors: null, validationMessage: "Weather information retrieved successfully.");
+            return new ResponseDto(success: true, data: currentWeather, errors: null, validationMessage: "Weather information retrieved successfully.");
         }
 
         [HttpGet("GetForecast")]
@@ -48,8 +62,16 @@ namespace Hyrde.Challenge.Controllers
         {
             IEnumerable<Weather> forecast = await _service.GetForecast(query);
 
+            var forecastWeather = forecast.Select(weatherObj => new ReadForecastDto
+            {
+                ForecastDate = weatherObj.ForecastDate,
+                ConditionIcon = weatherObj.ConditionIcon,
+                MaxTempCelcius = weatherObj.MaxTempCelcius,
+                MinTempCelcius = weatherObj.MinTempCelcius
+            });
+
             _logger.LogInformation($"Weather data retrieved successfully for {query}");
-            return new ResponseDto(true, forecast, null, "Weather information retrieved successfully.");
+            return new ResponseDto(true, forecastWeather, null, "Weather information retrieved successfully.");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using Hyrde.Challenge.Models;
 using Newtonsoft.Json;
+using Hyrde.Challenge.Dto;
 
 namespace Hyrde.Challenge.Services
 {
@@ -28,7 +29,7 @@ namespace Hyrde.Challenge.Services
                 string json = await response.Content.ReadAsStringAsync();
                 dynamic? data = JsonConvert.DeserializeObject(json);
 
-                Weather weather = new Weather
+                Weather currentWeather = new Weather
                 {
                     TempCelcius = (float)data?.current.temp_c,
                     ConditionText = data?.current.condition.text,
@@ -41,7 +42,7 @@ namespace Hyrde.Challenge.Services
                     Region = data?.location.region,
                     WindDir = data?.current.wind_dir
                 };
-                return weather;
+                return currentWeather;
             }
             else
             {
@@ -83,6 +84,7 @@ namespace Hyrde.Challenge.Services
             }
         }
 
+        // Convert (yyyy-mm-dd) to day of the week: Mon, Tue, Wed
         public string ConvertDate(string date)
         {
             DateTime dateTime = DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
