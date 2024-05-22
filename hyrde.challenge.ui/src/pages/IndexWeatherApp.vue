@@ -1,5 +1,17 @@
 <template>
   <div class="q-pa-md page-container">
+    <div>
+      <q-toggle
+        v-model="unit"
+        unchecked-icon="°C"
+        checked-icon="°F"
+        false-value="c"
+        true-value="f"
+        color="primary"
+        keep-color
+        @change="toggleUnit"
+      />
+    </div>
     <div id="input-btn-container">
       <div class="q-gutter-y-md column input-container" style="max-width: 300px">
         <q-input autofocus outlined rounded v-model="text" bg-color="white" label="Enter a location" @keyup.enter="fetchWeather" :error="hasError" :error-message="errorMessage" :loading="isLoading">
@@ -41,7 +53,7 @@
       </div>
       <div id="icon-temp-wrapper">
         <div class="weather-icon"><img :src="weatherToday.data['conditionIcon']" alt="Weather Icon"></div>
-        <div>{{weatherToday.data["tempCelcius"]}}°C</div>
+        <div>{{weatherToday.data["temperature"]}}{{unit === 'c' ? '°C' : '°F' }}</div>
       </div>
       <div id="max-min-temp-wrapper" v-if="weatherForecast && weatherForecast.data.length > 0">
         <div id="today-temp-max">Max: {{weatherForecast.data[0]["maxTempCelcius"]}}°C</div>
@@ -106,7 +118,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import axios from 'axios'
 
 export default {
@@ -118,6 +130,7 @@ export default {
     const isLoading = ref(false)
     const hasError = ref(false)
     const errorMessage = ref('')
+    const unit = ref('c')
 
     const fetchWeather = async () => {
       if (text.value.trim() === '') {
@@ -131,7 +144,7 @@ export default {
         hasError.value = false
         errorMessage.value = ''
 
-        const responseToday = await axios.get(`http://localhost:5114/WeatherForecast/GetToday?query=${text.value}`)
+        const responseToday = await axios.get(`http://localhost:5114/WeatherForecast/GetToday?query=${text.value}&unit=${unit.value}`)
         const responseForecast = await axios.get(`http://localhost:5114/WeatherForecast/GetForecast?query=${text.value}`)
         if (responseToday.data.errors || responseForecast.data.errors) {
           throw new Error(responseToday.data.errors || responseForecast.data.errors)
@@ -159,6 +172,12 @@ export default {
       errorMessage.value = ''
     }
 
+    const toggleUnit = () => {
+      unit.value = unit.value === 'c' ? 'f' : 'c'
+    }
+
+    watch(unit, fetchWeather)
+
     return {
       text,
       weatherToday,
@@ -167,8 +186,10 @@ export default {
       isLoading,
       hasError,
       errorMessage,
+      unit,
       fetchWeather,
-      clearText
+      clearText,
+      toggleUnit
     }
   }
 }

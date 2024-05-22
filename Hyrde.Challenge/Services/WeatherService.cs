@@ -20,7 +20,7 @@ namespace Hyrde.Challenge.Services
             _logger = logger;
         }
 
-        public async Task<Weather?> GetToday(string query)
+        public async Task<Weather?> GetToday(string query, string unit)
         {
             string url = $"{_baseUrl}/current.json?key={_apiKey}&q={query}";
 
@@ -35,6 +35,7 @@ namespace Hyrde.Challenge.Services
                     Weather currentWeather = new Weather
                     {
                         TempCelcius = (float)data?.current.temp_c,
+                        TempFahrenheit = (float)data?.current.temp_f,
                         ConditionText = data?.current.condition.text,
                         ConditionIcon = data?.current.condition.icon,
                         WindKph = (float)data?.current.wind_kph,

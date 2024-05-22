@@ -3,6 +3,7 @@
     public class Weather
     {
         public float TempCelcius { get; set; }
+        public float TempFahrenheit { get; set; }
         public string? ConditionText { get; set; }
         public string? ConditionIcon { get; set; }
         public float WindKph { get; set; }

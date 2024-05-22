@@ -19,17 +19,20 @@ namespace Hyrde.Challenge.Controllers
         }
 
         [HttpGet("GetToday")]
-        public async Task<ResponseDto> GetToday(string query)
+        public async Task<ResponseDto> GetToday(string query, string unit)
         {
             _logger.LogInformation("Received request for current weather with query: {Query}", query);
 
-            Weather? weather = await _service.GetToday(query);
+            Weather? weather = await _service.GetToday(query, unit);
 
             if (weather == null)
             {
                 _logger.LogWarning("Current weather data not found or error occurred for query: {Query}", query);
                 return new ResponseDto(false, null, ["Location not found or error occurred while retrieving current weather data"], "Validation failed");
             }
+
+            var celcius = weather.TempCelcius;
+            var fahrenheit = weather.TempFahrenheit;
 
             var currentWeather = new ReadCurrentDto
             {
@@ -38,7 +41,7 @@ namespace Hyrde.Challenge.Controllers
                 Country = weather.Country,
                 ConditionText = weather.ConditionText,
                 ConditionIcon = weather.ConditionIcon,
-                TempCelcius = weather.TempCelcius,
+                Temperature = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? celcius : fahrenheit,
                 WindKph = weather.WindKph,
                 WindDir = weather.WindDir,
                 PrecipitationMm = weather.PrecipitationMm,
