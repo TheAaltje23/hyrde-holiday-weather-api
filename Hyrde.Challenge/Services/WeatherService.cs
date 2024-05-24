@@ -86,7 +86,8 @@ namespace Hyrde.Challenge.Services
                                 MaxTempCelcius = f.day.maxtemp_c,
                                 MinTempCelcius = f.day.mintemp_c,
                                 MaxTempFahrenheit = f.day.maxtemp_f,
-                                MinTempFahrenheit = f.day.mintemp_f
+                                MinTempFahrenheit = f.day.mintemp_f,
+                                ChanceOfRain = f.day.daily_chance_of_rain
 
                             };
                             forecast.Add(weather);

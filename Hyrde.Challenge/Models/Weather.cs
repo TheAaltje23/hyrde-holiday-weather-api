@@ -18,6 +18,7 @@
         public float MinTempCelcius { get; set; }
         public float MaxTempFahrenheit { get; set; }
         public float MinTempFahrenheit { get; set; }
+        public int ChanceOfRain { get; set; }
 
     }
 }

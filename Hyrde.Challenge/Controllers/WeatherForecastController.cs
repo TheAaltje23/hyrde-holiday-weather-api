@@ -68,6 +68,7 @@ namespace Hyrde.Challenge.Controllers
                 ConditionIcon = weatherObj.ConditionIcon,
                 MaxTemperature = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weatherObj.MaxTempCelcius : weatherObj.MaxTempFahrenheit,
                 MinTemperature = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weatherObj.MinTempCelcius : weatherObj.MinTempFahrenheit,
+                ChanceOfRain = weatherObj.ChanceOfRain
             });
 
             _logger.LogInformation("Forecast data retrieved successfully for query: {Query}", query);

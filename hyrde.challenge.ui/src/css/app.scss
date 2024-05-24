@@ -111,7 +111,7 @@ body,
 #output-wrapper-forecast {
     display: flex;
     flex-direction: column;
-    max-width: min(95vw, 600px);
+    max-width: min(95vw, 800px);
     color: $white;
 }
 
@@ -119,14 +119,19 @@ body,
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
     padding: 20px;
 }
 
 #forecast-items {
+    min-width: 125px;
     display: flex;
     flex-direction: column;
     color: $white;
+    background-color: $secondary;
+    border: 2px solid $primary;
+    border-radius: 20px;
+    padding: 10px;
 }
 
 .forecast-day {
@@ -139,10 +144,11 @@ body,
     justify-content: center;
 }
 
-.forecast-temp {
-    padding-top: 10px;
+.forecast-row {
+    padding: 5px;
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
     gap: 5px;
 }
 
@@ -154,4 +160,8 @@ body,
 .forecast-temp-min,
 #today-temp-min {
     font-weight: lighter;
+}
+
+.forecast-chance {
+    justify-content: center;
 }
