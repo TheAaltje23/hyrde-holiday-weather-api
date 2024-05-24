@@ -65,7 +65,7 @@
             <div><q-icon class="info-icon" color="primary" name="air" /></div>
             <div>
               <div class="info-title">Wind</div>
-              <div class="info-data">{{weatherToday.data["windKph"]}}km/h</div>
+              <div class="info-data">{{weatherToday.data["wind"]}} {{unit === 'c' ? 'km/h' : 'mph' }}</div>
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@
             <div><q-icon class="info-icon" color="primary" name="water_drop" /></div>
             <div>
               <div class="info-title">Precipitation</div>
-              <div class="info-data">{{weatherToday.data["precipitationMm"]}}mm</div>
+              <div class="info-data">{{weatherToday.data["precipitationMm"]}} mm</div>
             </div>
           </div>
         </div>

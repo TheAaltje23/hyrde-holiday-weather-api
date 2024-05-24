@@ -8,7 +8,7 @@ namespace Hyrde.Challenge.Dto
         public string? ConditionText { get; set; }
         public string? ConditionIcon { get; set; }
         public float Temperature { get; set; }
-        public float WindKph { get; set; }
+        public float Wind { get; set; }
         public string? WindDir { get; set; }
         public float PrecipitationMm { get; set; }
         public int Humidity { get; set; }

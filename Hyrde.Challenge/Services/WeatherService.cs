@@ -39,6 +39,7 @@ namespace Hyrde.Challenge.Services
                         ConditionText = data?.current.condition.text,
                         ConditionIcon = data?.current.condition.icon,
                         WindKph = (float)data?.current.wind_kph,
+                        WindMph = (float)data?.current.wind_mph,
                         PrecipitationMm = (float)data?.current.precip_mm,
                         Humidity = (int)data?.current.humidity,
                         City = data?.location.name,

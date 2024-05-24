@@ -39,7 +39,7 @@ namespace Hyrde.Challenge.Controllers
                 ConditionText = weather.ConditionText,
                 ConditionIcon = weather.ConditionIcon,
                 Temperature = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weather.TempCelcius : weather.TempFahrenheit,
-                WindKph = weather.WindKph,
+                Wind = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weather.WindKph : weather.WindMph,
                 WindDir = weather.WindDir,
                 PrecipitationMm = weather.PrecipitationMm,
                 Humidity = weather.Humidity
