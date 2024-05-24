@@ -20,6 +20,12 @@ body,
     min-height: 100vh;
 }
 
+#temperature-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
 #input-btn-container {
     display: flex;
     align-items: center;

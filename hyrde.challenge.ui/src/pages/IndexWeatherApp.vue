@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md page-container">
-    <div>
+    <div id="temperature-toggle">
       <q-toggle
         v-model="unit"
         unchecked-icon="°C"
