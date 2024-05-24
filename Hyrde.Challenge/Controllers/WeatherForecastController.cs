@@ -31,9 +31,6 @@ namespace Hyrde.Challenge.Controllers
                 return new ResponseDto(false, null, ["Location not found or error occurred while retrieving current weather data"], "Validation failed");
             }
 
-            var celcius = weather.TempCelcius;
-            var fahrenheit = weather.TempFahrenheit;
-
             var currentWeather = new ReadCurrentDto
             {
                 City = weather.City,
@@ -41,7 +38,7 @@ namespace Hyrde.Challenge.Controllers
                 Country = weather.Country,
                 ConditionText = weather.ConditionText,
                 ConditionIcon = weather.ConditionIcon,
-                Temperature = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? celcius : fahrenheit,
+                Temperature = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weather.TempCelcius : weather.TempFahrenheit,
                 WindKph = weather.WindKph,
                 WindDir = weather.WindDir,
                 PrecipitationMm = weather.PrecipitationMm,
@@ -53,11 +50,11 @@ namespace Hyrde.Challenge.Controllers
         }
 
         [HttpGet("GetForecast")]
-        public async Task<ResponseDto> GetForecast(string query)
+        public async Task<ResponseDto> GetForecast(string query, string unit)
         {
             _logger.LogInformation("Received request for forecast weather with query: {Query}", query);
 
-            IEnumerable<Weather>? forecast = await _service.GetForecast(query);
+            IEnumerable<Weather>? forecast = await _service.GetForecast(query, unit);
 
             if (forecast == null)
             {
@@ -69,8 +66,8 @@ namespace Hyrde.Challenge.Controllers
             {
                 ForecastDate = weatherObj.ForecastDate,
                 ConditionIcon = weatherObj.ConditionIcon,
-                MaxTempCelcius = weatherObj.MaxTempCelcius,
-                MinTempCelcius = weatherObj.MinTempCelcius
+                MaxTemperature = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weatherObj.MaxTempCelcius : weatherObj.MaxTempFahrenheit,
+                MinTemperature = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weatherObj.MinTempCelcius : weatherObj.MinTempFahrenheit,
             });
 
             _logger.LogInformation("Forecast data retrieved successfully for query: {Query}", query);

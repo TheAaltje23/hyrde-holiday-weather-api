@@ -56,8 +56,8 @@
         <div>{{weatherToday.data["temperature"]}}{{unit === 'c' ? '°C' : '°F' }}</div>
       </div>
       <div id="max-min-temp-wrapper" v-if="weatherForecast && weatherForecast.data.length > 0">
-        <div id="today-temp-max">Max: {{weatherForecast.data[0]["maxTempCelcius"]}}°C</div>
-        <div id="today-temp-min">Min: {{weatherForecast.data[0]["minTempCelcius"]}}°C</div>
+        <div id="today-temp-max">Max: {{weatherForecast.data[0]["maxTemperature"]}}{{unit === 'c' ? '°C' : '°F' }}</div>
+        <div id="today-temp-min">Min: {{weatherForecast.data[0]["minTemperature"]}}{{unit === 'c' ? '°C' : '°F' }}</div>
       </div>
       <div id="info-wrapper">
         <div id="windspeed" class="infos">
@@ -107,8 +107,8 @@
           <div class="forecast-day">{{index === 0 ? 'Today' : index === 1 ? 'Tomorrow' : forecastItem["forecastDate"]}}</div>
           <div class="weather-icon"><img :src="forecastItem['conditionIcon']" alt="Weather Icon"></div>
           <div class="forecast-temp">
-            <div class="forecast-temp-max">{{forecastItem["maxTempCelcius"]}}°C</div>
-            <div class="forecast-temp-min">{{forecastItem["minTempCelcius"]}}°C</div>
+            <div class="forecast-temp-max">{{forecastItem["maxTemperature"]}}{{unit === 'c' ? '°C' : '°F' }}</div>
+            <div class="forecast-temp-min">{{forecastItem["minTemperature"]}}{{unit === 'c' ? '°C' : '°F' }}</div>
           </div>
         </div>
       </div>
@@ -145,7 +145,7 @@ export default {
         errorMessage.value = ''
 
         const responseToday = await axios.get(`http://localhost:5114/WeatherForecast/GetToday?query=${text.value}&unit=${unit.value}`)
-        const responseForecast = await axios.get(`http://localhost:5114/WeatherForecast/GetForecast?query=${text.value}`)
+        const responseForecast = await axios.get(`http://localhost:5114/WeatherForecast/GetForecast?query=${text.value}&unit=${unit.value}`)
         if (responseToday.data.errors || responseForecast.data.errors) {
           throw new Error(responseToday.data.errors || responseForecast.data.errors)
         }

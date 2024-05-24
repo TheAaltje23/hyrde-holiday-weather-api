@@ -61,7 +61,7 @@ namespace Hyrde.Challenge.Services
             }
         }
 
-        public async Task<IEnumerable<Weather>?> GetForecast(string query)
+        public async Task<IEnumerable<Weather>?> GetForecast(string query, string unit)
         {
             string url = $"{_baseUrl}/forecast.json?key={_apiKey}&q={query}&days=5";
 
@@ -85,6 +85,9 @@ namespace Hyrde.Challenge.Services
                                 ConditionIcon = f.day.condition.icon,
                                 MaxTempCelcius = f.day.maxtemp_c,
                                 MinTempCelcius = f.day.mintemp_c,
+                                MaxTempFahrenheit = f.day.maxtemp_f,
+                                MinTempFahrenheit = f.day.mintemp_f
+
                             };
                             forecast.Add(weather);
                         }

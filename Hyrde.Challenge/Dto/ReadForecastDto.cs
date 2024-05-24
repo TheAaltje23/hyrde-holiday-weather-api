@@ -4,7 +4,7 @@ namespace Hyrde.Challenge.Dto
     {
         public string? ForecastDate { get; set; }
         public string? ConditionIcon { get; set; }
-        public float MaxTempCelcius { get; set; }
-        public float MinTempCelcius { get; set; }
+        public float MaxTemperature { get; set; }
+        public float MinTemperature { get; set; }
     }
 }

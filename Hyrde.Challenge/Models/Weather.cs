@@ -14,7 +14,10 @@
         public string? Region { get; set; }
         public string? WindDir { get; set; }
         public string? ForecastDate { get; set; }
-        public float MinTempCelcius { get; set; }
         public float MaxTempCelcius { get; set; }
+        public float MinTempCelcius { get; set; }
+        public float MaxTempFahrenheit { get; set; }
+        public float MinTempFahrenheit { get; set; }
+
     }
 }
