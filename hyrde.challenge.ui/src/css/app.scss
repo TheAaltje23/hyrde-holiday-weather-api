@@ -110,8 +110,41 @@ body,
 }
 
 // OUTPUT HOURLY
-#output-wrapper-hourly {}
+#output-wrapper-hourly {
+    max-width: min(95vw, 800px);
+}
 
+#hourly-table-wrapper {
+    background-color: $secondary;
+    border: 2px solid $primary;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.hourly-table {
+    color: $white;
+    background-color: $transparent;
+    border-radius: 0px;
+}
+
+.hourly-table .q-table__top,
+.hourly-table .q-table__bottom,
+.hourly-table tr:first-child th {
+    background-color: $primary;
+}
+
+.hourly-table thead tr th {
+    position: sticky;
+    z-index: 1;
+}
+
+.hourly-table thead tr:first-child th {
+    top: 0;
+}
+
+.hourly-header {
+    font-weight: bold;
+}
 
 // OUTPUT FORECAST
 #output-wrapper-forecast {

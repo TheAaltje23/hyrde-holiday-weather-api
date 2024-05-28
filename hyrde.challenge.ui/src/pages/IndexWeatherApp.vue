@@ -91,9 +91,7 @@
       <div id="location-wrapper">
         <h2>{{ weatherToday.data["city"] }}, {{ weatherToday.data["region"] }}, {{ weatherToday.data["country"] }}</h2>
       </div>
-      <div>
-        <HourlyTable :hourlyData="weatherHourly" />
-      </div>
+        <HourlyTable :hourlyData="weatherHourly" :unit="unit" />
     </div>
     <!-- FORECAST -->
     <div id="output-wrapper-forecast" v-if="weatherForecast && model === 'forecast'">
