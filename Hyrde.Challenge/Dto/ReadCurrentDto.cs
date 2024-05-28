@@ -10,7 +10,7 @@ namespace Hyrde.Challenge.Dto
         public float Temperature { get; set; }
         public float Wind { get; set; }
         public string? WindDir { get; set; }
-        public float PrecipitationMm { get; set; }
+        public float Precipitation { get; set; }
         public int Humidity { get; set; }
     }
 }

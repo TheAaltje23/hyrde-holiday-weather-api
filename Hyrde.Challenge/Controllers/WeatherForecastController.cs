@@ -41,7 +41,7 @@ namespace Hyrde.Challenge.Controllers
                 Temperature = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weather.TempCelcius : weather.TempFahrenheit,
                 Wind = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weather.WindKph : weather.WindMph,
                 WindDir = weather.WindDir,
-                PrecipitationMm = weather.PrecipitationMm,
+                Precipitation = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weather.PrecipitationMm : weather.PrecipitationIn,
                 Humidity = weather.Humidity
             };
 
@@ -94,7 +94,7 @@ namespace Hyrde.Challenge.Controllers
                 ConditionIcon = weatherObj.ConditionIcon,
                 Temperature = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weatherObj.TempCelcius : weatherObj.TempFahrenheit,
                 ChanceOfRain = weatherObj.ChanceOfRain,
-                PrecipitationMm = weatherObj.PrecipitationMm,
+                Precipitation = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weatherObj.PrecipitationMm : weatherObj.PrecipitationIn,
                 Wind = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weatherObj.WindKph : weatherObj.WindMph,
                 WindDir = weatherObj.WindDir
             });

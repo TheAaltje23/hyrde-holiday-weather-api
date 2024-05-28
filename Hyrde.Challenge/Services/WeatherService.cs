@@ -41,6 +41,7 @@ namespace Hyrde.Challenge.Services
                         WindKph = (float)data?.current.wind_kph,
                         WindMph = (float)data?.current.wind_mph,
                         PrecipitationMm = (float)data?.current.precip_mm,
+                        PrecipitationIn = (float)data?.current.precip_in,
                         Humidity = (int)data?.current.humidity,
                         City = data?.location.name,
                         Country = data?.location.country,
@@ -136,6 +137,7 @@ namespace Hyrde.Challenge.Services
                                     TempFahrenheit = h.temp_f,
                                     ChanceOfRain = h.chance_of_rain,
                                     PrecipitationMm = h.precip_mm,
+                                    PrecipitationIn = h.precip_in,
                                     WindKph = h.wind_kph,
                                     WindMph = h.wind_mph,
                                     WindDir = h.wind_dir
