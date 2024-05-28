@@ -6,5 +6,6 @@ namespace Hyrde.Challenge.Services
     {
         Task<Weather?> GetToday(string query, string unit);
         Task<IEnumerable<Weather>?> GetForecast(string query, string unit);
+        Task<IEnumerable<Weather>?> GetHourly(string query, string unit);
     }
 }

@@ -89,7 +89,6 @@ namespace Hyrde.Challenge.Services
                                 MaxTempFahrenheit = f.day.maxtemp_f,
                                 MinTempFahrenheit = f.day.mintemp_f,
                                 ChanceOfRain = f.day.daily_chance_of_rain
-
                             };
                             forecast.Add(weather);
                         }
@@ -105,6 +104,57 @@ namespace Hyrde.Challenge.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Exception occurred while retrieving forecast weather data");
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<Weather>?> GetHourly(string query, string unit)
+        {
+            string url = $"{_baseUrl}/forecast.json?key={_apiKey}&q={query}&days=1";
+
+            try
+            {
+                HttpResponseMessage response = await _client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    string json = await response.Content.ReadAsStringAsync();
+                    dynamic? data = JsonConvert.DeserializeObject(json);
+
+                    List<Weather> hourly = new List<Weather>();
+
+                    if (data != null)
+                    {
+                        foreach (var f in data.forecast.forecastday)
+                        {
+                            foreach (var h in f.hour)
+                            {
+                                Weather weather = new Weather
+                                {
+                                    ForecastHour = h.time,
+                                    ConditionIcon = h.condition.icon,
+                                    TempCelcius = h.temp_c,
+                                    TempFahrenheit = h.temp_f,
+                                    ChanceOfRain = h.chance_of_rain,
+                                    PrecipitationMm = h.precip_mm,
+                                    WindKph = h.wind_kph,
+                                    WindMph = h.wind_mph,
+                                    WindDir = h.wind_dir
+                                };
+                                hourly.Add(weather);
+                            }
+                        }
+                    }
+                    return hourly;
+                }
+                else
+                {
+                    _logger.LogError("Failed to retrieve hourly weather data from API. Status code: {StatusCode}", response.StatusCode);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception occurred while retrieving hourly weather data");
                 return null;
             }
         }

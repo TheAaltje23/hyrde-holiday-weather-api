@@ -74,5 +74,33 @@ namespace Hyrde.Challenge.Controllers
             _logger.LogInformation("Forecast data retrieved successfully for query: {Query}", query);
             return new ResponseDto(true, forecastWeather, null, "Forecast weather information retrieved successfully");
         }
+
+        [HttpGet("GetHourly")]
+        public async Task<ResponseDto> GetHourly(string query, string unit)
+        {
+            _logger.LogInformation("Received request for hourly weather with query: {Query}", query);
+
+            IEnumerable<Weather>? hourly = await _service.GetHourly(query, unit);
+
+            if (hourly == null)
+            {
+                _logger.LogWarning("Hourly weather data not found or error occurred for query: {Query}", query);
+                return new ResponseDto(false, null, ["Location not found or error occurred while retrieving hourly weather data"], "Validation failed");
+            }
+
+            var hourlyWeather = hourly.Select(weatherObj => new ReadHourlyDto
+            {
+                ForecastHour = weatherObj.ForecastHour,
+                ConditionIcon = weatherObj.ConditionIcon,
+                Temperature = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weatherObj.TempCelcius : weatherObj.TempFahrenheit,
+                ChanceOfRain = weatherObj.ChanceOfRain,
+                PrecipitationMm = weatherObj.PrecipitationMm,
+                Wind = unit.Equals("c", StringComparison.OrdinalIgnoreCase) ? weatherObj.WindKph : weatherObj.WindMph,
+                WindDir = weatherObj.WindDir
+            });
+
+            _logger.LogInformation("Hourly data retrieved successfully for query: {Query}", query);
+            return new ResponseDto(true, hourlyWeather, null, "Hourly weather information retrieved successfully");
+        }
     }
 }

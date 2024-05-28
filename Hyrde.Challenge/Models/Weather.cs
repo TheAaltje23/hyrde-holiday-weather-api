@@ -20,6 +20,6 @@
         public float MaxTempFahrenheit { get; set; }
         public float MinTempFahrenheit { get; set; }
         public int ChanceOfRain { get; set; }
-
+        public string? ForecastHour { get; set; }
     }
 }
