@@ -82,7 +82,7 @@ namespace Hyrde.Challenge.Services
                         {
                             Weather weather = new Weather
                             {
-                                ForecastDate = ConvertDate((string)f.date),
+                                ForecastDate = ConvertDateToDayOfTheWeek((string)f.date),
                                 ConditionIcon = f.day.condition.icon,
                                 MaxTempCelcius = f.day.maxtemp_c,
                                 MinTempCelcius = f.day.mintemp_c,
@@ -130,7 +130,7 @@ namespace Hyrde.Challenge.Services
                             {
                                 Weather weather = new Weather
                                 {
-                                    ForecastHour = h.time,
+                                    ForecastHour = ConvertDateToHour((string)h.time),
                                     ConditionIcon = h.condition.icon,
                                     TempCelcius = h.temp_c,
                                     TempFahrenheit = h.temp_f,
@@ -160,11 +160,19 @@ namespace Hyrde.Challenge.Services
         }
 
         // Convert (yyyy-mm-dd) to day of the week: Mon, Tue, Wed, etc.
-        public string ConvertDate(string date)
+        public string ConvertDateToDayOfTheWeek(string date)
         {
             DateTime dateTime = DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             string dayOfWeek = dateTime.ToString("ddd", new CultureInfo("en-US"));
             return dayOfWeek;
+        }
+
+        // Convert (yyyy-mm-dd hh:mm) to hour: 00:00
+        public string ConvertDateToHour(string date)
+        {
+            DateTime dateTime = DateTime.ParseExact(date, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture);
+            string timeOfDay = dateTime.ToString("HH:mm", new CultureInfo("en-US"));
+            return timeOfDay;
         }
     }
 }
