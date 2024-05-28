@@ -19,15 +19,15 @@
 import { h, computed } from 'vue'
 
 export default {
-  name: 'HourlyTable',
+  name: 'HourlyTableComponent',
   props: {
     hourlyData: {
       type: Object,
-      required: false
+      required: true
     },
     unit: {
       type: String,
-      required: false
+      required: true
     }
   },
   setup (props) {
@@ -41,10 +41,10 @@ export default {
         format: val => `${val}`,
         sortable: true
       },
-      { name: 'icon', align: 'center', label: 'Icon', field: 'icon', format: val => h('img', { src: val, alt: 'Weather Icon' }), sortable: true },
+      { name: 'icon', align: 'center', label: 'Icon', field: 'icon', format: val => h('img', { src: val, alt: 'Weather Icon' }) },
       { name: 'temp', align: 'center', label: 'Temperature', field: 'temp', sortable: true },
       { name: 'chanceOfRain', align: 'center', label: 'Chance of Rain', field: 'chanceOfRain', format: val => `${val}%`, sortable: true },
-      { name: 'precip', align: 'center', label: 'Precipitation', field: 'precip', format: val => `${val} mm`, sortable: true },
+      { name: 'precip', align: 'center', label: 'Precipitation', field: 'precip', sortable: true },
       { name: 'wind', align: 'center', label: 'Wind', field: 'wind', sortable: true },
       { name: 'windDir', align: 'center', label: 'Wind Direction', field: 'windDir', sortable: true }
     ]
@@ -55,7 +55,7 @@ export default {
         icon: item.conditionIcon,
         temp: item.temperature + `${props.unit === 'c' ? '°C' : '°F'}`,
         chanceOfRain: item.chanceOfRain,
-        precip: item.precipitationMm,
+        precip: item.precipitation + ` ${props.unit === 'c' ? 'mm' : 'in'}`,
         wind: item.wind + ` ${props.unit === 'c' ? 'km/h' : 'mph'}`,
         windDir: item.windDir
       }))

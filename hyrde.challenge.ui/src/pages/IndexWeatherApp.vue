@@ -31,9 +31,7 @@
     </div>
     <!-- TODAY -->
     <div id="output-wrapper-today" v-if="weatherToday && model === 'today'">
-      <div id="location-wrapper">
-        <h2>{{ weatherToday.data["city"] }}, {{ weatherToday.data["region"] }}, {{ weatherToday.data["country"] }}</h2>
-      </div>
+      <LocationComponent :locationData="weatherToday" />
       <div id="condition-wrapper">
         <h3>{{ weatherToday.data["conditionText"] }}</h3>
       </div>
@@ -71,7 +69,7 @@
             <div><q-icon class="info-icon" color="primary" name="water_drop" /></div>
             <div>
               <div class="info-title">Precipitation</div>
-              <div class="info-data">{{ weatherToday.data["precipitationMm"] }} mm</div>
+              <div class="info-data">{{ weatherToday.data["precipitation"] }} {{ unit === 'c' ? 'mm' : 'in' }}</div>
             </div>
           </div>
         </div>
@@ -88,32 +86,13 @@
     </div>
     <!-- HOURLY -->
     <div id="output-wrapper-hourly" v-if="weatherHourly && model === 'hourly'">
-      <div id="location-wrapper">
-        <h2>{{ weatherToday.data["city"] }}, {{ weatherToday.data["region"] }}, {{ weatherToday.data["country"] }}</h2>
-      </div>
-        <HourlyTable :hourlyData="weatherHourly" :unit="unit" />
+      <LocationComponent :locationData="weatherToday" />
+      <HourlyTableComponent :hourlyData="weatherHourly" :unit="unit" />
     </div>
     <!-- FORECAST -->
     <div id="output-wrapper-forecast" v-if="weatherForecast && model === 'forecast'">
-      <div id="location-wrapper">
-        <h2>{{ weatherToday.data["city"] }}, {{ weatherToday.data["region"] }}, {{ weatherToday.data["country"] }}</h2>
-      </div>
-      <div id="forecast-wrapper">
-        <div id="forecast-items" v-for="(forecastItem, index) in weatherForecast.data" :key="index">
-          <div class="forecast-day">{{ index === 0 ? 'Today' : index === 1 ? 'Tomorrow' : forecastItem["forecastDate"]
-            }}
-          </div>
-          <div class="weather-icon"><img :src="forecastItem['conditionIcon']" alt="Weather Icon"></div>
-          <div class="forecast-row">
-            <div class="forecast-temp-max">{{ forecastItem["maxTemperature"] }}{{ unit === 'c' ? '°C' : '°F' }}</div>
-            <div class="forecast-temp-min">{{ forecastItem["minTemperature"] }}{{ unit === 'c' ? '°C' : '°F' }}</div>
-          </div>
-          <div class="forecast-row forecast-chance">
-            <div><q-icon class="info-icon" color="primary" name="water_drop" /></div>
-            <div class="forecast-rain">{{ forecastItem["chanceOfRain"] }}%</div>
-          </div>
-        </div>
-      </div>
+      <LocationComponent :locationData="weatherToday" />
+      <ForecastComponent :forecastData="weatherForecast" :unit="unit" />
     </div>
   </div>
 </template>
@@ -121,11 +100,15 @@
 <script>
 import { ref, watch } from 'vue'
 import axios from 'axios'
-import HourlyTable from 'src/components/HourlyTable.vue'
+import HourlyTableComponent from 'src/components/HourlyTableComponent.vue'
+import LocationComponent from 'src/components/LocationComponent.vue'
+import ForecastComponent from 'src/components/ForecastComponent.vue'
 
 export default {
   components: {
-    HourlyTable
+    HourlyTableComponent,
+    LocationComponent,
+    ForecastComponent
   },
 
   setup () {
