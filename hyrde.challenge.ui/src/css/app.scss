@@ -53,6 +53,7 @@ body,
 #location-wrapper>h2 {
     font-size: 1.3rem;
     text-align: center;
+    color: $white;
 }
 
 #condition-wrapper>h3 {
@@ -97,6 +98,7 @@ body,
     align-items: center;
     gap: 10px;
     padding: 10px;
+    min-width: 125px;
 }
 
 .info-icon {
@@ -106,6 +108,10 @@ body,
 .info-title {
     font-weight: bold;
 }
+
+// OUTPUT HOURLY
+#output-wrapper-hourly {}
+
 
 // OUTPUT FORECAST
 #output-wrapper-forecast {
