@@ -1,4 +1,6 @@
 using Hyrde.Challenge.Configuration;
+using Hyrde.Challenge.Data;
+using Hyrde.Challenge.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureApiHttpClients(builder.Configuration);
+
+// Configure DbContext
+builder.Services.AddDbContext<UserDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("UserDatabase")));
+builder.Services.AddScoped<IUserService, UserService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
