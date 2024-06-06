@@ -1,6 +1,7 @@
 using Hyrde.Challenge.Configuration;
 using Hyrde.Challenge.Data;
 using Hyrde.Challenge.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +15,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureApiHttpClients(builder.Configuration);
 
-// Configure DbContext
+// Register UserDbContext with the connection string from appsettings.json
 builder.Services.AddDbContext<UserDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("UserDatabase")));
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MariaDbServerVersion(new Version(10, 4, 32))
+    ));
+
+// Register UserService
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();

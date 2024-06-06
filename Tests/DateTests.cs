@@ -1,4 +1,4 @@
-using Hyrde.Challenge.Services
+using Hyrde.Challenge.Services;
 
 namespace Tests
 {
