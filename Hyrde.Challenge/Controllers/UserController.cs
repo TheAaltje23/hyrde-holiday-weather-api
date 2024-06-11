@@ -122,11 +122,14 @@ namespace Hyrde.Challenge.Controllers
                 return new ResponseDto(false, null, ["Password does not meet length criteria"], "Password must be at least 8 characters long");
             }
 
+            // HASH PASSWORD
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(createUserDto.Password);
+
             // CREATE USER
             var newUser = new User
             {
                 Username = createUserDto.Username,
-                Password = createUserDto.Password
+                Password = hashedPassword
             };
 
             await _service.CreateUser(newUser);
