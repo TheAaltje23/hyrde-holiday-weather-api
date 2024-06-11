@@ -134,9 +134,9 @@ export default {
         hasError.value = false
         errorMessage.value = ''
 
-        const responseToday = await axios.get(`http://localhost:5114/WeatherForecast/GetToday?query=${text.value}&unit=${unit.value}`)
-        const responseForecast = await axios.get(`http://localhost:5114/WeatherForecast/GetForecast?query=${text.value}&unit=${unit.value}`)
-        const responseHourly = await axios.get(`http://localhost:5114/WeatherForecast/GetHourly?query=${text.value}&unit=${unit.value}`)
+        const responseToday = await axios.get(`http://localhost:5114/weatherforecast/today?query=${text.value}&unit=${unit.value}`)
+        const responseForecast = await axios.get(`http://localhost:5114/weatherforecast/forecast?query=${text.value}&unit=${unit.value}`)
+        const responseHourly = await axios.get(`http://localhost:5114/weatherforecast/hourly?query=${text.value}&unit=${unit.value}`)
         if (responseToday.data.errors || responseForecast.data.errors) {
           throw new Error(responseToday.data.errors || responseForecast.data.errors)
         }
