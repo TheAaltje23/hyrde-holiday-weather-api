@@ -100,8 +100,9 @@ namespace Hyrde.Challenge.Controllers
                 return new ResponseDto(false, null, ["Invalid user data"], "Validation failed");
             }
 
-            // DOES USER EXIST?
             var existingUser = await _service.GetUserByUsername(createUserDto.Username);
+
+            // DOES USER EXIST?
             if (existingUser != null)
             {
                 _logger.LogWarning("User with the provided username already exists");
@@ -145,8 +146,9 @@ namespace Hyrde.Challenge.Controllers
                 return new ResponseDto(false, null, ["Invalid user data"], "Validation failed");
             }
 
-            // DOES USER EXIST?
             var existingUser = await _service.GetUserById(id);
+
+            // DOES USER EXIST?
             if (existingUser == null)
             {
                 return new ResponseDto(false, existingUser, ["User does not exist"], "User not found");
@@ -170,6 +172,24 @@ namespace Hyrde.Challenge.Controllers
             await _service.UpdateUser(existingUser);
             _logger.LogInformation("User updated successfully");
             return new ResponseDto(true, existingUser, null, "User updated successfully");
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<ResponseDto> DeleteUser(long id)
+        {
+            _logger.LogInformation("Received request to delete a user");
+            var existingUser = await _service.GetUserById(id);
+
+            // DOES USER EXIST?
+            if (existingUser == null)
+            {
+                return new ResponseDto(false, existingUser, ["User does not exist"], "User not found");
+            }
+
+            // DELETE USER
+            await _service.DeleteUser(existingUser.Id);
+            _logger.LogInformation("User deleted successfully");
+            return new ResponseDto(true, existingUser, null, "User deleted successfully");
         }
     }
 }
