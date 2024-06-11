@@ -18,7 +18,7 @@ namespace Hyrde.Challenge.Controllers
             _service = service;
         }
 
-        [HttpGet("GetToday")]
+        [HttpGet("today")]
         public async Task<ResponseDto> GetToday(string query, string unit)
         {
             _logger.LogInformation("Received request for current weather with query: {Query}", query);
@@ -49,7 +49,7 @@ namespace Hyrde.Challenge.Controllers
             return new ResponseDto(true, currentWeather, null, "Current weather information retrieved successfully");
         }
 
-        [HttpGet("GetForecast")]
+        [HttpGet("forecast")]
         public async Task<ResponseDto> GetForecast(string query, string unit)
         {
             _logger.LogInformation("Received request for forecast weather with query: {Query}", query);
@@ -75,7 +75,7 @@ namespace Hyrde.Challenge.Controllers
             return new ResponseDto(true, forecastWeather, null, "Forecast weather information retrieved successfully");
         }
 
-        [HttpGet("GetHourly")]
+        [HttpGet("hourly")]
         public async Task<ResponseDto> GetHourly(string query, string unit)
         {
             _logger.LogInformation("Received request for hourly weather with query: {Query}", query);

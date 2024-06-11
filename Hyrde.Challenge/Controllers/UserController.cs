@@ -19,7 +19,7 @@ namespace Hyrde.Challenge.Controllers
         }
 
         // READ
-        [HttpGet("User/{id:long}")]
+        [HttpGet("{id:long}")]
         public async Task<ResponseDto> GetUserById(long id)
         {
             _logger.LogInformation("Received request for user with id: {id}", id);
@@ -42,7 +42,7 @@ namespace Hyrde.Challenge.Controllers
             return new ResponseDto(true, userDto, null, "User retrieved successfully");
         }
 
-        [HttpGet("User/{username}")]
+        [HttpGet("{username}")]
         public async Task<ResponseDto> GetUserByUsername(string username)
         {
             _logger.LogInformation("Received request for user with username: {username}", username);
@@ -65,7 +65,7 @@ namespace Hyrde.Challenge.Controllers
             return new ResponseDto(true, userDto, null, "User retrieved successfully");
         }
 
-        [HttpGet("User/All")]
+        [HttpGet("all")]
         public async Task<ResponseDto> GetAllUsers()
         {
             _logger.LogInformation("Received request for all users");
