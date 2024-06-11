@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hyrde.Challenge.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20240611084807_InitialCreate")]
+    [Migration("20240611091356_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
