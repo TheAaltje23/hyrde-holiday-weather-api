@@ -53,7 +53,7 @@ namespace Hyrde.Challenge.Services
         // DELETE
         public async Task DeleteUser(long id)
         {
-            User? user = await _context.User.FindAsync(id);
+            var user = await _context.User.FindAsync(id);
             if (user != null)
             {
                 _logger.LogInformation("Deleting user with id: {id}", id);

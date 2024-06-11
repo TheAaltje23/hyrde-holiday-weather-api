@@ -24,12 +24,12 @@ namespace Hyrde.Challenge.Controllers
         {
             _logger.LogInformation("Received request for user with id: {id}", id);
 
-            User? user = await _service.GetUserById(id);
+            var user = await _service.GetUserById(id);
 
             if (user == null)
             {
                 _logger.LogWarning("User not found or error occurred for user with id: {id}", id);
-                return new ResponseDto(false, null, ["User not found or error occurred while retrieving user data"], "Validation failed");
+                return new ResponseDto(false, null, ["User not found or error occurred while retrieving user data"], "User not found");
             }
 
             var userDto = new ReadUserDto
@@ -52,7 +52,7 @@ namespace Hyrde.Challenge.Controllers
             if (user == null)
             {
                 _logger.LogWarning("User not found or error occurred for user with username: {username}", username);
-                return new ResponseDto(false, null, ["User not found or error occurred while retrieving user data"], "Validation failed");
+                return new ResponseDto(false, null, ["User not found or error occurred while retrieving user data"], "User not found");
             }
 
             var userDto = new ReadUserDto
@@ -75,7 +75,7 @@ namespace Hyrde.Challenge.Controllers
             if (users == null)
             {
                 _logger.LogWarning("Users not found or error occurred");
-                return new ResponseDto(false, null, ["Users not found or error occurred while retrieving user data"], "Validation failed");
+                return new ResponseDto(false, null, ["Users not found or error occurred while retrieving user data"], "Users not found");
             }
 
             var userDtos = users.Select(user => new ReadUserDto
@@ -88,6 +88,7 @@ namespace Hyrde.Challenge.Controllers
             return new ResponseDto(true, userDtos, null, userDtos.Count() + " users retrieved successfully");
         }
 
+        // CREATE
         [HttpPost("create")]
         public async Task<ResponseDto> CreateUser([FromBody] CreateUserDto createUserDto)
         {
@@ -97,7 +98,7 @@ namespace Hyrde.Challenge.Controllers
             if (string.IsNullOrWhiteSpace(createUserDto.Username) || string.IsNullOrWhiteSpace(createUserDto.Password))
             {
                 _logger.LogWarning("Invalid user creation request: user data is null");
-                return new ResponseDto(false, null, ["Invalid user data"], "Validation failed");
+                return new ResponseDto(false, null, ["Invalid user creation request: user data is null"], "Invalid user data");
             }
 
             var existingUser = await _service.GetUserByUsername(createUserDto.Username);
@@ -105,21 +106,21 @@ namespace Hyrde.Challenge.Controllers
             // DOES USER EXIST?
             if (existingUser != null)
             {
-                _logger.LogWarning("User with the provided username already exists");
+                _logger.LogWarning("User with the provided username already exists: {username}", existingUser.Username);
                 return new ResponseDto(false, existingUser.Username, ["User with the provided username already exists"], "Username is already taken");
             }
 
             // LENGTH VALIDATION
             if (createUserDto.Username.Length < 8)
             {
-                _logger.LogWarning("Username does not meet length criteria");
-                return new ResponseDto(false, null, ["Username does not meet length criteria"], "Username must be at least 8 characters long");
+                _logger.LogWarning("Username must be at least 8 characters long");
+                return new ResponseDto(false, null, ["Username must be at least 8 characters long"], "Username does not meet length criteria");
             }
 
             if (createUserDto.Password.Length < 8)
             {
-                _logger.LogWarning("Password does not meet length criteria");
-                return new ResponseDto(false, null, ["Password does not meet length criteria"], "Password must be at least 8 characters long");
+                _logger.LogWarning("Password must be at least 8 characters long");
+                return new ResponseDto(false, null, ["Password must be at least 8 characters long"], "Password does not meet length criteria");
             }
 
             // HASH PASSWORD
@@ -137,6 +138,7 @@ namespace Hyrde.Challenge.Controllers
             return new ResponseDto(true, newUser, null, "User created successfully");
         }
 
+        // UPDATE
         [HttpPut("update/{id}")]
         public async Task<ResponseDto> UpdateUser([FromBody] UpdateUserDto updateUserDto, long id)
         {
@@ -146,7 +148,7 @@ namespace Hyrde.Challenge.Controllers
             if (string.IsNullOrWhiteSpace(updateUserDto.Username) || string.IsNullOrWhiteSpace(updateUserDto.Password))
             {
                 _logger.LogWarning("Invalid user update request: user data is null");
-                return new ResponseDto(false, null, ["Invalid user data"], "Validation failed");
+                return new ResponseDto(false, null, ["Invalid user update request: user data is null"], "Invalid user data");
             }
 
             var existingUser = await _service.GetUserById(id);
@@ -154,18 +156,21 @@ namespace Hyrde.Challenge.Controllers
             // DOES USER EXIST?
             if (existingUser == null)
             {
+                _logger.LogWarning("User does not exist");
                 return new ResponseDto(false, existingUser, ["User does not exist"], "User not found");
             }
 
             // LENGTH VALIDATION
             if (updateUserDto.Username.Length < 8)
             {
-                return new ResponseDto(false, null, ["Username does not meet length criteria"], "Username must be at least 8 characters long");
+                _logger.LogWarning("Username must be at least 8 characters long");
+                return new ResponseDto(false, null, ["Username must be at least 8 characters long"], "Username does not meet length criteria");
             }
 
             if (updateUserDto.Password.Length < 8)
             {
-                return new ResponseDto(false, null, ["Password does not meet length criteria"], "Password must be at least 8 characters long");
+                _logger.LogWarning("Password must be at least 8 characters long");
+                return new ResponseDto(false, null, ["Password must be at least 8 characters long"], "Password does not meet length criteria");
             }
 
             // UPDATE USER
@@ -177,6 +182,7 @@ namespace Hyrde.Challenge.Controllers
             return new ResponseDto(true, existingUser, null, "User updated successfully");
         }
 
+        // DELETE
         [HttpDelete("delete/{id}")]
         public async Task<ResponseDto> DeleteUser(long id)
         {
@@ -186,6 +192,7 @@ namespace Hyrde.Challenge.Controllers
             // DOES USER EXIST?
             if (existingUser == null)
             {
+                _logger.LogWarning("User does not exist");
                 return new ResponseDto(false, existingUser, ["User does not exist"], "User not found");
             }
 
