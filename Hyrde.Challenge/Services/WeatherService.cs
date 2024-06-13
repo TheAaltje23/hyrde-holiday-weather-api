@@ -65,7 +65,7 @@ namespace Hyrde.Challenge.Services
 
         public async Task<IEnumerable<Weather>?> GetForecast(string query, string unit)
         {
-            string url = $"{_baseUrl}/forecast.json?key={_apiKey}&q={query}&days=5";
+            string url = $"{_baseUrl}/forecast.json?key={_apiKey}&q={query}&days=3";
 
             try
             {
