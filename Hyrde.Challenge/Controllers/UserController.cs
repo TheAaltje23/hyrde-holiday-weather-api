@@ -2,6 +2,7 @@ using Hyrde.Challenge.Models;
 using Microsoft.AspNetCore.Mvc;
 using Hyrde.Challenge.Dto;
 using Hyrde.Challenge.Services;
+using BCrypt.Net;
 
 namespace Hyrde.Challenge.Controllers
 {
@@ -135,7 +136,7 @@ namespace Hyrde.Challenge.Controllers
 
             await _service.CreateUser(newUser);
             _logger.LogInformation("User created successfully");
-            return new ResponseDto(true, newUser, null, "User created successfully");
+            return new ResponseDto(true, null, null, "User created successfully");
         }
 
         // UPDATE
@@ -145,7 +146,7 @@ namespace Hyrde.Challenge.Controllers
             _logger.LogInformation("Received request to update a user");
 
             // IS DATA COMPLETE?
-            if (string.IsNullOrWhiteSpace(updateUserDto.Username) || string.IsNullOrWhiteSpace(updateUserDto.Password))
+            if (string.IsNullOrWhiteSpace(updateUserDto.Username) && string.IsNullOrWhiteSpace(updateUserDto.Password))
             {
                 _logger.LogWarning("Invalid user update request: user data is null");
                 return new ResponseDto(false, null, ["Invalid user update request: user data is null"], "Invalid user data");
@@ -161,25 +162,32 @@ namespace Hyrde.Challenge.Controllers
             }
 
             // LENGTH VALIDATION
-            if (updateUserDto.Username.Length < 8)
+            if (!string.IsNullOrWhiteSpace(updateUserDto.Username) && updateUserDto.Username.Length < 8)
             {
                 _logger.LogWarning("Username must be at least 8 characters long");
                 return new ResponseDto(false, null, ["Username must be at least 8 characters long"], "Username does not meet length criteria");
             }
 
-            if (updateUserDto.Password.Length < 8)
+            if (!string.IsNullOrWhiteSpace(updateUserDto.Password) && updateUserDto.Password.Length < 8)
             {
                 _logger.LogWarning("Password must be at least 8 characters long");
                 return new ResponseDto(false, null, ["Password must be at least 8 characters long"], "Password does not meet length criteria");
             }
 
             // UPDATE USER
-            existingUser.Username = updateUserDto.Username;
-            existingUser.Password = updateUserDto.Password;
+            if (!string.IsNullOrWhiteSpace(updateUserDto.Username))
+            {
+                existingUser.Username = updateUserDto.Username;
+            }
+
+            if (!string.IsNullOrWhiteSpace(updateUserDto.Password))
+            {
+                existingUser.Password = BCrypt.Net.BCrypt.HashPassword(updateUserDto.Password);
+            }
 
             await _service.UpdateUser(existingUser);
             _logger.LogInformation("User updated successfully");
-            return new ResponseDto(true, existingUser, null, "User updated successfully");
+            return new ResponseDto(true, null, null, "User updated successfully");
         }
 
         // DELETE
