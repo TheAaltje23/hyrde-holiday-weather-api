@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Hyrde.Challenge.Dto;
 using Hyrde.Challenge.Services;
 using BCrypt.Net;
+using Microsoft.Extensions.Logging;
 
 namespace Hyrde.Challenge.Controllers
 {
@@ -88,6 +89,40 @@ namespace Hyrde.Challenge.Controllers
             _logger.LogInformation("Users retrieved successfully");
             return new ResponseDto(true, userDtos, null, userDtos.Count() + " users retrieved successfully");
         }
+
+        // LOGIN
+        [HttpPost("login")]
+        public async Task<ResponseDto> Login([FromBody] LoginDto loginDto)
+        {
+            _logger.LogInformation("Received login request");
+
+            // IS DATA COMPLETE?
+            if (string.IsNullOrWhiteSpace(loginDto.Username) || string.IsNullOrWhiteSpace(loginDto.Password))
+            {
+                _logger.LogWarning("Invalid login request: login data is null");
+                return new ResponseDto(false, null, ["Please enter your username and password"], "Invalid login request");
+            }
+
+            var existingUser = await _service.GetUserByUsername(loginDto.Username);
+
+            if (existingUser == null)
+            {
+                _logger.LogInformation("Invalid login attempt: {username} not found", loginDto.Username);
+                return new ResponseDto(false, null, ["Invalid username or password"], "Login failed");
+            }
+
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(loginDto.Password, existingUser.Password);
+
+            if (!isPasswordValid)
+            {
+                _logger.LogInformation("Invalid login attempt: incorrect password");
+                return new ResponseDto(false, null, ["Invalid username or password"], "Login failed");
+            }
+            
+            _logger.LogInformation("User logged in successfully");
+            return new ResponseDto(true, existingUser, null, "Login successful");
+        }
+
 
         // CREATE
         [HttpPost("create")]
