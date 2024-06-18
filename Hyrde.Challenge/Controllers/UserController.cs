@@ -2,8 +2,7 @@ using Hyrde.Challenge.Models;
 using Microsoft.AspNetCore.Mvc;
 using Hyrde.Challenge.Dto;
 using Hyrde.Challenge.Services;
-using BCrypt.Net;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hyrde.Challenge.Controllers
 {
@@ -12,12 +11,14 @@ namespace Hyrde.Challenge.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
-        private readonly IUserService _service;
+        private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
 
-        public UserController(ILogger<UserController> logger, IUserService service)
+        public UserController(ILogger<UserController> logger, IUserService userService, ITokenService tokenService)
         {
             _logger = logger;
-            _service = service;
+            _userService = userService;
+            _tokenService = tokenService;
         }
 
         // READ
@@ -26,7 +27,7 @@ namespace Hyrde.Challenge.Controllers
         {
             _logger.LogInformation("Received request for user with id: {id}", id);
 
-            var user = await _service.GetUserById(id);
+            var user = await _userService.GetUserById(id);
 
             if (user == null)
             {
@@ -49,7 +50,7 @@ namespace Hyrde.Challenge.Controllers
         {
             _logger.LogInformation("Received request for user with username: {username}", username);
 
-            User? user = await _service.GetUserByUsername(username);
+            User? user = await _userService.GetUserByUsername(username);
 
             if (user == null)
             {
@@ -67,12 +68,13 @@ namespace Hyrde.Challenge.Controllers
             return new ResponseDto(true, userDto, null, "User retrieved successfully");
         }
 
+        [Authorize]
         [HttpGet("all")]
         public async Task<ResponseDto> GetAllUsers()
         {
             _logger.LogInformation("Received request for all users");
 
-            var users = await _service.GetAllUsers();
+            var users = await _userService.GetAllUsers();
 
             if (users == null)
             {
@@ -103,7 +105,7 @@ namespace Hyrde.Challenge.Controllers
                 return new ResponseDto(false, null, ["Please enter your username and password"], "Invalid login request");
             }
 
-            var existingUser = await _service.GetUserByUsername(loginDto.Username);
+            var existingUser = await _userService.GetUserByUsername(loginDto.Username);
 
             if (existingUser == null)
             {
@@ -118,11 +120,19 @@ namespace Hyrde.Challenge.Controllers
                 _logger.LogInformation("Invalid login attempt: incorrect password");
                 return new ResponseDto(false, null, ["Invalid username or password"], "Login failed");
             }
-            
-            _logger.LogInformation("User logged in successfully");
-            return new ResponseDto(true, existingUser, null, "Login successful");
-        }
 
+            // GENERATE TOKEN
+            var token = _tokenService.GenerateToken(existingUser);
+
+            var tokenResponse = new
+            {
+                Token = token,
+                Username = existingUser.Username
+            };
+
+            _logger.LogInformation("User logged in successfully");
+            return new ResponseDto(true, tokenResponse, null, "Login successful");
+        }
 
         // CREATE
         [HttpPost("create")]
@@ -137,7 +147,7 @@ namespace Hyrde.Challenge.Controllers
                 return new ResponseDto(false, null, ["Invalid user creation request: user data is null"], "Invalid user data");
             }
 
-            var existingUser = await _service.GetUserByUsername(createUserDto.Username);
+            var existingUser = await _userService.GetUserByUsername(createUserDto.Username);
 
             // DOES USER EXIST?
             if (existingUser != null)
@@ -169,7 +179,7 @@ namespace Hyrde.Challenge.Controllers
                 Password = hashedPassword
             };
 
-            await _service.CreateUser(newUser);
+            await _userService.CreateUser(newUser);
             _logger.LogInformation("User created successfully");
             return new ResponseDto(true, null, null, "User created successfully");
         }
@@ -187,7 +197,7 @@ namespace Hyrde.Challenge.Controllers
                 return new ResponseDto(false, null, ["Invalid user update request: user data is null"], "Invalid user data");
             }
 
-            var existingUser = await _service.GetUserById(id);
+            var existingUser = await _userService.GetUserById(id);
 
             // DOES USER EXIST?
             if (existingUser == null)
@@ -220,7 +230,7 @@ namespace Hyrde.Challenge.Controllers
                 existingUser.Password = BCrypt.Net.BCrypt.HashPassword(updateUserDto.Password);
             }
 
-            await _service.UpdateUser(existingUser);
+            await _userService.UpdateUser(existingUser);
             _logger.LogInformation("User updated successfully");
             return new ResponseDto(true, null, null, "User updated successfully");
         }
@@ -230,7 +240,7 @@ namespace Hyrde.Challenge.Controllers
         public async Task<ResponseDto> DeleteUser(long id)
         {
             _logger.LogInformation("Received request to delete a user");
-            var existingUser = await _service.GetUserById(id);
+            var existingUser = await _userService.GetUserById(id);
 
             // DOES USER EXIST?
             if (existingUser == null)
@@ -240,7 +250,7 @@ namespace Hyrde.Challenge.Controllers
             }
 
             // DELETE USER
-            await _service.DeleteUser(existingUser.Id);
+            await _userService.DeleteUser(existingUser.Id);
             _logger.LogInformation("User deleted successfully");
             return new ResponseDto(true, existingUser, null, "User deleted successfully");
         }

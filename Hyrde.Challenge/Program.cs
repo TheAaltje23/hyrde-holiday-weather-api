@@ -1,7 +1,10 @@
 using Hyrde.Challenge.Configuration;
 using Hyrde.Challenge.Data;
 using Hyrde.Challenge.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,15 +18,47 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureApiHttpClients(builder.Configuration);
 
-// Register UserDbContext with the connection string from appsettings.json
+// XAMPP --> Register UserDbContext with the connection string from appsettings.json
 builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         new MariaDbServerVersion(new Version(10, 4, 32))
     ));
 
-// Register UserService
+// Register Services
+builder.Services.AddScoped<IWeatherService, WeatherService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
+// Configure JWT Authentication
+var jwtKey = builder.Configuration["Jwt:Key"];
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
+
+if (string.IsNullOrEmpty(jwtKey) || string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience))
+{
+    throw new InvalidOperationException("JWT configuration is missing in appsettings.json");
+}
+
+var key = Encoding.ASCII.GetBytes(jwtKey);
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = jwtIssuer, // The issuer of the token
+        ValidAudience = jwtAudience, // Intended recipient
+        IssuerSigningKey = new SymmetricSecurityKey(key), // Key that the token is signed with
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+});
 
 var app = builder.Build();
 
@@ -43,6 +78,7 @@ app.UseCors(builder => builder
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
