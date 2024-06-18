@@ -17,12 +17,10 @@ body,
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
 }
 
 #temperature-toggle {
     position: absolute;
-    top: 0;
     right: 0;
 }
 
@@ -31,6 +29,7 @@ body,
     align-items: center;
     max-width: min(95vw, 500px);
     gap: 10px;
+    margin-top: 20px;
 }
 
 .input-container {
@@ -40,6 +39,21 @@ body,
 #toggle-container {
     margin-top: 20px;
     padding: 20px;
+}
+
+.header-title {
+    color: $white;
+    text-decoration: none;
+}
+
+.drawer {
+    background: $primary;
+}
+
+.drawer-list {
+    color: $white;
+    background-color: $positive;
+    font-size: 1.5rem;
 }
 
 // OUTPUT TODAY
