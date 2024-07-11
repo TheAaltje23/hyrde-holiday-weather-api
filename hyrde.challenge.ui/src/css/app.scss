@@ -54,6 +54,19 @@ body,
     color: $white;
     background-color: $positive;
     font-size: 1.5rem;
+    border-radius: 0 32px 32px 0;
+}
+
+.drawer-link {
+    text-decoration: none;
+    color: $primary;
+}
+
+.drawer-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 0 32px 32px 0;
 }
 
 // OUTPUT TODAY
@@ -219,4 +232,19 @@ body,
 
 .forecast-chance {
     justify-content: center;
+}
+
+// LOGIN
+.login-card {
+    margin-top: 50px;
+    background-color: $secondary;
+    color: $white;
+    border: 2px solid $primary;
+    border-radius: 20px;
+    min-width: 300px;
+    max-width: min(95vw, 800px);
+}
+
+.login-item {
+    background-color: $white;
 }

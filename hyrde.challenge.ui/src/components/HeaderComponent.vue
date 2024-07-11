@@ -5,13 +5,16 @@
             <q-toolbar-title><a class="header-title" href="#">Alex's Weather Forecast</a></q-toolbar-title>
         </q-toolbar>
     </q-header>
-    <q-drawer v-model="drawer" class="drawer">
-        <q-list padding class="menu-list drawer-list" >
-            <q-item clickable v-ripple>
-                <q-item-section>
-                    Login
-                </q-item-section>
-            </q-item>
+    <q-drawer v-model="drawer" class="drawer" behavior="desktop" overlay>
+        <q-list padding class="menu-list drawer-list">
+            <router-link class="drawer-link" to="/login">
+                <q-item class="drawer-item" clickable v-ripple>
+                    <q-icon class="info-icon" color="primary" name="login" />
+                    <q-item-section>
+                        Login
+                    </q-item-section>
+                </q-item>
+            </router-link>
         </q-list>
     </q-drawer>
 </template>
