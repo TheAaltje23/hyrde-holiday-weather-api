@@ -25,13 +25,17 @@
 </template>
 
 <script>
+import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import axios from 'axios'
 
 export default {
   setup () {
+    const $q = useQuasar()
     const username = ref(null)
     const password = ref(null)
+    const router = useRouter()
 
     const onSubmit = async () => {
       try {
@@ -39,9 +43,27 @@ export default {
           username: username.value,
           password: password.value
         })
+
+        if (responseLogin.data.success === true) {
+          $q.notify({
+            color: 'positive',
+            textColor: 'white',
+            icon: 'cloud_done',
+            message: responseLogin.data.validationMessage
+          })
+          router.push({ name: 'homepage' })
+        } else {
+          $q.notify({
+            color: 'negative',
+            textColor: 'white',
+            icon: 'warning',
+            message: responseLogin.data.validationMessage
+          })
+        }
+
         console.log(responseLogin.data)
       } catch (error) {
-        console.error(error.response.data)
+        console.error(error)
       }
     }
 

@@ -5,8 +5,8 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/LayoutWeatherApp.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexWeatherApp.vue') },
-      { path: 'login', component: () => import('pages/LoginWeatherApp.vue') }
+      { path: '', name: 'homepage', component: () => import('pages/IndexWeatherApp.vue') },
+      { path: 'login', name: 'login', component: () => import('pages/LoginWeatherApp.vue') }
     ]
   },
 
