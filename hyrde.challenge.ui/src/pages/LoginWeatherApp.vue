@@ -2,15 +2,19 @@
   <div class="page-container">
 
     <q-card class="login-card">
+      <q-card-section class="text-center">
+            <div class="text-h5 text-weight-bold">Log in</div>
+            <div>Log in below to access your account</div>
+          </q-card-section>
       <q-card-section>
         <div class="q-pa-md">
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
 
             <q-input bg-color="white" filled v-model="username" label="Your username" lazy-rules
-              :rules="[val => val && val.length > 0 || 'Please type something']" />
+              :rules="[val => val && val.length > 0 || 'Please type your username']" />
 
             <q-input bg-color="white" filled type="password" v-model="password" label="Your password" lazy-rules
-              :rules="[val => val !== null && val !== '' || 'Please type your password']" />
+              :rules="[val => val && val.length > 0 || 'Please type your password']" />
 
             <div>
               <q-btn label="Login" type="submit" color="primary" />
@@ -57,11 +61,9 @@ export default {
             color: 'negative',
             textColor: 'white',
             icon: 'warning',
-            message: responseLogin.data.validationMessage
+            message: responseLogin.data.errors
           })
         }
-
-        console.log(responseLogin.data)
       } catch (error) {
         console.error(error)
       }
