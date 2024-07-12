@@ -22,6 +22,7 @@ namespace Hyrde.Challenge.Controllers
         }
 
         // READ
+        [Authorize]
         [HttpGet("{id:long}")]
         public async Task<ResponseDto> GetUserById(long id)
         {
@@ -45,6 +46,7 @@ namespace Hyrde.Challenge.Controllers
             return new ResponseDto(true, userDto, null, "User retrieved successfully");
         }
 
+        [Authorize]
         [HttpGet("{username}")]
         public async Task<ResponseDto> GetUserByUsername(string username)
         {
@@ -135,6 +137,7 @@ namespace Hyrde.Challenge.Controllers
         }
 
         // CREATE
+        [Authorize]
         [HttpPost("create")]
         public async Task<ResponseDto> CreateUser([FromBody] CreateUserDto createUserDto)
         {
@@ -185,6 +188,7 @@ namespace Hyrde.Challenge.Controllers
         }
 
         // UPDATE
+        [Authorize]
         [HttpPut("update/{id}")]
         public async Task<ResponseDto> UpdateUser([FromBody] UpdateUserDto updateUserDto, long id)
         {
@@ -236,6 +240,7 @@ namespace Hyrde.Challenge.Controllers
         }
 
         // DELETE
+        [Authorize]
         [HttpDelete("delete/{id}")]
         public async Task<ResponseDto> DeleteUser(long id)
         {
