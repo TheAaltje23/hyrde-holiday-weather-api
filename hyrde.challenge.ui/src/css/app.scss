@@ -2,253 +2,250 @@
 *,
 ::before,
 ::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body,
 .error-404 {
-    background: $primary;
-    background: linear-gradient(180deg, rgba(7, 0, 40, 0.85) 35%, rgba(33, 186, 69, 0.75) 100%);
+  background: $primary;
+  background: linear-gradient(180deg, rgba(7, 0, 40, 0.85) 35%, rgba(33, 186, 69, 0.75) 100%);
 }
 
 .page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #temperature-toggle {
-    position: absolute;
-    right: 0;
+  position: absolute;
+  right: 0;
 }
 
 #input-btn-container {
-    display: flex;
-    align-items: center;
-    max-width: min(95vw, 500px);
-    gap: 10px;
-    margin-top: 20px;
+  display: flex;
+  align-items: center;
+  max-width: min(95vw, 500px);
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .input-container {
-    margin-top: 0px;
+  margin-top: 0px;
 }
 
 #toggle-container {
-    margin-top: 20px;
-    padding: 20px;
+  margin-top: 20px;
+  padding: 20px;
 }
 
 .header-title {
-    color: $white;
-    text-decoration: none;
+  color: $white;
+  text-decoration: none;
 }
 
 .toolbar-welcome {
-    font-size: 21px;
+  font-size: 21px;
 }
 
 .drawer {
-    background: $primary;
+  background: $primary;
 }
 
 .drawer-list {
-    color: $white;
-    background-color: $positive;
-    font-size: 1.5rem;
-    border-radius: 0 32px 32px 0;
+  font-size: 1.5rem;
 }
 
 .drawer-link {
-    text-decoration: none;
-    color: $primary;
+  text-decoration: none;
+  color: $primary;
 }
 
 .drawer-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-radius: 0 32px 32px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: $positive;
 }
 
 // OUTPUT TODAY
 #output-wrapper-today {
-    display: flex;
-    flex-direction: column;
-    max-width: min(95vw, 800px);
-    color: $white;
+  display: flex;
+  flex-direction: column;
+  max-width: min(95vw, 800px);
+  color: $white;
 }
 
 #location-wrapper>h2 {
-    font-size: 1.3rem;
-    text-align: center;
-    color: $white;
-    line-height: normal;
-    padding: 20px;
+  font-size: 1.3rem;
+  text-align: center;
+  color: $white;
+  line-height: normal;
+  padding: 20px;
 }
 
 #condition-wrapper>h3 {
-    font-size: 2rem;
-    text-align: center;
+  font-size: 2rem;
+  text-align: center;
 }
 
 #icon-temp-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    gap: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  gap: 5px;
 }
 
 #max-min-temp-wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 1.1rem;
-    padding: 10px;
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 1.1rem;
+  padding: 10px;
+  text-align: center;
 }
 
 #info-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 5px;
 }
 
 .infos {
-    flex: 45%;
-    background-color: $secondary;
-    border: 2px solid $primary;
-    border-radius: 20px;
+  flex: 45%;
+  background-color: $secondary;
+  border: 2px solid $primary;
+  border-radius: 20px;
 }
 
 .info-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    min-width: 125px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  min-width: 125px;
 }
 
 .info-icon {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 .info-title {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 // OUTPUT HOURLY
 #output-wrapper-hourly {
-    max-width: min(95vw, 800px);
+  max-width: min(95vw, 800px);
 }
 
 #hourly-table-wrapper {
-    background-color: $secondary;
-    border: 2px solid $primary;
-    border-radius: 20px;
-    padding: 10px;
+  background-color: $secondary;
+  border: 2px solid $primary;
+  border-radius: 20px;
+  padding: 10px;
 }
 
 .hourly-table {
-    color: $white;
-    background-color: $transparent;
-    border-radius: 0px;
+  color: $white;
+  background-color: $transparent;
+  border-radius: 0px;
 }
 
 .hourly-table .q-table__top,
 .hourly-table .q-table__bottom,
 .hourly-table tr:first-child th {
-    background-color: $primary;
+  background-color: $primary;
 }
 
 .hourly-table thead tr th {
-    position: sticky;
-    z-index: 1;
+  position: sticky;
+  z-index: 1;
 }
 
 .hourly-table thead tr:first-child th {
-    top: 0;
+  top: 0;
 }
 
 .hourly-header {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 // OUTPUT FORECAST
 #output-wrapper-forecast {
-    display: flex;
-    flex-direction: column;
-    max-width: min(95vw, 800px);
-    color: $white;
+  display: flex;
+  flex-direction: column;
+  max-width: min(95vw, 800px);
+  color: $white;
 }
 
 #forecast-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  padding: 20px;
 }
 
 #forecast-items {
-    min-width: 125px;
-    display: flex;
-    flex-direction: column;
-    color: $white;
-    background-color: $secondary;
-    border: 2px solid $primary;
-    border-radius: 20px;
-    padding: 10px;
+  min-width: 125px;
+  display: flex;
+  flex-direction: column;
+  color: $white;
+  background-color: $secondary;
+  border: 2px solid $primary;
+  border-radius: 20px;
+  padding: 10px;
 }
 
 .forecast-day {
-    text-align: center;
-    font-weight: bold;
+  text-align: center;
+  font-weight: bold;
 }
 
 .weather-icon {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .forecast-row {
-    padding: 5px;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: 5px;
+  padding: 5px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 5px;
 }
 
 .forecast-temp-max,
 #today-temp-max {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .forecast-temp-min,
 #today-temp-min {
-    font-weight: lighter;
+  font-weight: lighter;
 }
 
 .forecast-chance {
-    justify-content: center;
+  justify-content: center;
 }
 
 // LOGIN
 .login-card {
-    margin-top: 50px;
-    background-color: $secondary;
-    color: $white;
-    border: 2px solid $primary;
-    border-radius: 20px;
-    min-width: 300px;
-    max-width: min(95vw, 800px);
+  margin-top: 50px;
+  background-color: $secondary;
+  color: $white;
+  border: 2px solid $primary;
+  border-radius: 20px;
+  min-width: 300px;
+  max-width: min(95vw, 800px);
 }
 
 .login-item {
-    background-color: $white;
+  background-color: $white;
 }

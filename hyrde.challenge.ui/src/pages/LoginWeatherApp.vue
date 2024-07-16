@@ -84,7 +84,6 @@ export default {
     const onReset = () => {
       username.value = null
       password.value = null
-      localStorage.removeItem('username')
     }
 
     return {
