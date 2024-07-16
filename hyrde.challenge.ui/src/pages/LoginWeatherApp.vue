@@ -7,7 +7,7 @@
             <div>Log in below to access your account</div>
           </q-card-section>
       <q-card-section>
-        <div class="q-pa-md">
+        <div class="q-pa-sm">
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
 
             <q-input bg-color="white" filled v-model="username" label="Your username" lazy-rules
@@ -33,6 +33,7 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import axios from 'axios'
+import { store } from 'src/store/store'
 
 export default {
   setup () {
@@ -49,6 +50,11 @@ export default {
         })
 
         if (responseLogin.data.success === true) {
+          // Store token and username
+          localStorage.setItem('authToken', responseLogin.data.data.token)
+          store.username = username.value
+          localStorage.setItem('username', store.username)
+
           $q.notify({
             color: 'positive',
             textColor: 'white',
@@ -61,17 +67,24 @@ export default {
             color: 'negative',
             textColor: 'white',
             icon: 'warning',
-            message: responseLogin.data.errors
+            message: responseLogin.data.errors.join(', ')
           })
         }
       } catch (error) {
         console.error(error)
+        $q.notify({
+          color: 'negative',
+          textColor: 'white',
+          icon: 'warning',
+          message: 'An error occurred while trying to log in'
+        })
       }
     }
 
     const onReset = () => {
       username.value = null
       password.value = null
+      localStorage.removeItem('username')
     }
 
     return {
