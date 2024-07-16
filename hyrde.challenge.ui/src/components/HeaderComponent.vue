@@ -2,7 +2,7 @@
   <q-header elevated>
     <q-toolbar>
       <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
-      <q-toolbar-title><a class="header-title" href="#">Alex's Weather Forecast</a></q-toolbar-title>
+      <q-toolbar-title><a class="header-title" href="#">Alex's Weather Forecast API</a></q-toolbar-title>
       <div class="toolbar-welcome" v-if="username">Welcome {{ username }}</div>
     </q-toolbar>
   </q-header>

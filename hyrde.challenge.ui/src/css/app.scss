@@ -41,6 +41,7 @@ body,
   padding: 20px;
 }
 
+// HEADER
 .header-title {
   color: $white;
   text-decoration: none;
@@ -50,6 +51,7 @@ body,
   font-size: 21px;
 }
 
+// DRAWER
 .drawer {
   background: $primary;
 }
@@ -68,6 +70,23 @@ body,
   align-items: center;
   gap: 10px;
   background-color: $positive;
+}
+
+// LOGIN
+.login-card {
+  margin-top: 50px;
+  background-color: $secondary;
+  color: $white;
+  border: 2px solid $primary;
+  border-radius: 20px;
+  min-width: 350px;
+  max-width: min(95vw, 800px);
+}
+
+.login-text {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 // OUTPUT TODAY
@@ -233,19 +252,4 @@ body,
 
 .forecast-chance {
   justify-content: center;
-}
-
-// LOGIN
-.login-card {
-  margin-top: 50px;
-  background-color: $secondary;
-  color: $white;
-  border: 2px solid $primary;
-  border-radius: 20px;
-  min-width: 300px;
-  max-width: min(95vw, 800px);
-}
-
-.login-item {
-  background-color: $white;
 }

@@ -2,10 +2,10 @@
   <div class="page-container">
 
     <q-card class="login-card">
-      <q-card-section class="text-center">
-            <div class="text-h5 text-weight-bold">Log in</div>
-            <div>Log in below to access your account</div>
-          </q-card-section>
+      <q-card-section class="text-center login-text">
+        <div class="text-h5 text-weight-bold">Log in</div>
+        <div>Log in below to access your account</div>
+      </q-card-section>
       <q-card-section>
         <div class="q-pa-sm">
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
