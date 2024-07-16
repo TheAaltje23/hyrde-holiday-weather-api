@@ -33,7 +33,7 @@ import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 import axios from 'axios'
-import { store } from 'src/store/store'
+import { store } from 'src/global/store'
 
 export default {
   setup () {

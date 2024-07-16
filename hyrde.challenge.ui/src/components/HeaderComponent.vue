@@ -8,22 +8,18 @@
   </q-header>
   <q-drawer v-model="drawer" class="drawer" behavior="desktop" overlay>
     <q-list padding class="menu-list drawer-list">
-      <router-link class="drawer-link" to="/login">
-        <q-item class="drawer-item" clickable v-ripple>
-          <q-icon class="info-icon" color="primary" name="login" />
-          <q-item-section>
-            Login
-          </q-item-section>
-        </q-item>
-      </router-link>
-      <router-link class="drawer-link" to="/login">
-        <q-item class="drawer-item" clickable v-ripple @click="onLogout">
-          <q-icon class="info-icon" color="primary" name="logout" />
-          <q-item-section>
-            Logout
-          </q-item-section>
-        </q-item>
-      </router-link>
+      <q-item class="drawer-item" clickable v-ripple @click="onLogin">
+        <q-icon class="info-icon" color="primary" name="login" />
+        <q-item-section>
+          Login
+        </q-item-section>
+      </q-item>
+      <q-item class="drawer-item" clickable v-ripple @click="onLogout">
+        <q-icon class="info-icon" color="primary" name="logout" />
+        <q-item-section>
+          Logout
+        </q-item-section>
+      </q-item>
     </q-list>
   </q-drawer>
 </template>
@@ -31,32 +27,60 @@
 <script>
 
 import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 import { computed, ref } from 'vue'
-import { store } from 'src/store/store'
+import { store } from 'src/global/store'
 
 export default {
   name: 'HeaderComponent',
   setup () {
     const $q = useQuasar()
+    const router = useRouter()
     const drawer = ref(false)
     const username = computed(() => store.username)
+    const isLoggedIn = computed(() => !!store.username)
+
+    const onLogin = () => {
+      if (isLoggedIn.value) {
+        $q.notify({
+          color: 'negative',
+          textColor: 'white',
+          icon: 'warning',
+          message: 'You are already logged in'
+        })
+      } else {
+        router.push({ name: 'login' })
+      }
+    }
 
     const onLogout = () => {
-      localStorage.removeItem('authToken')
-      localStorage.removeItem('username')
-      store.username = ''
+      if (isLoggedIn.value) {
+        localStorage.removeItem('authToken')
+        localStorage.removeItem('username')
+        store.username = ''
 
-      $q.notify({
-        color: 'positive',
-        textColor: 'white',
-        icon: 'cloud_off',
-        message: 'Logout successful'
-      })
+        $q.notify({
+          color: 'positive',
+          textColor: 'white',
+          icon: 'cloud_off',
+          message: 'Logout successful'
+        })
+      } else {
+        $q.notify({
+          color: 'negative',
+          textColor: 'white',
+          icon: 'warning',
+          message: 'You are already logged out'
+        })
+      }
+      router.push({ name: 'login' })
     }
 
     return {
       drawer,
       username,
+      isLoggedIn,
+      onLogin,
       onLogout
     }
   }
