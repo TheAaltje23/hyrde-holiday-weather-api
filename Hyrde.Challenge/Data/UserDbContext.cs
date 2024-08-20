@@ -13,10 +13,11 @@ namespace Hyrde.Challenge.Data
 
             modelBuilder.Entity<User>(entity =>
             {
+                entity.ToTable("user"); // Map the entity to the 'user' table in MySQL. On Linux MySQL is case-sensitive, however on Windows it's not...
                 entity.Property(e => e.Username)
                       .IsRequired()
                       .HasMaxLength(50)
-                      .UseCollation("utf8mb4_bin"); // Case-sensitive
+                      .UseCollation("utf8mb4_bin"); // Case-sensitive usernames
             });
         }
     }

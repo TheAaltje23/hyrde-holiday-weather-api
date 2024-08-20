@@ -70,7 +70,6 @@ namespace Hyrde.Challenge.Controllers
             return new ResponseDto(true, userDto, null, "User retrieved successfully");
         }
 
-        [Authorize]
         [HttpGet("all")]
         public async Task<ResponseDto> GetAllUsers()
         {
