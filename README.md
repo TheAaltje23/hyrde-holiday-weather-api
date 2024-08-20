@@ -1,4 +1,4 @@
-**How to run the application on your own system using docker:**
+**How to run the application on your own system using Docker:**
 
 _Ensure Docker is installed and running on your system before following these steps_
 1. Download the `docker-compose.yml` file
