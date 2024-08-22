@@ -8,29 +8,30 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuration files
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile("appsettings.key.json", optional: true, reloadOnChange: true);
 
+// Services
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureApiHttpClients(builder.Configuration);
 
-// XAMPP --> Register UserDbContext with the connection string from appsettings.json
+// Custom services
+builder.Services.AddScoped<IWeatherService, WeatherService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+
+// DbContext for EFC (MySQL)
 builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         new MariaDbServerVersion(new Version(10, 4, 32))
     ));
 
-// Register Services
-builder.Services.AddScoped<IWeatherService, WeatherService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-
-// Configure JWT Authentication
+// Configure JWT authentication
 var jwtKey = builder.Configuration["Jwt:Key"];
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 var jwtAudience = builder.Configuration["Jwt:Audience"];
@@ -60,7 +61,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Add CORS policy
+// CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins",
